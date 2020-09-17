@@ -1,6 +1,9 @@
 package ziface
 
-import "net"
+import (
+	"net"
+	"time"
+)
 
 //定义连接接口
 type IConnection interface {
@@ -8,7 +11,6 @@ type IConnection interface {
 	Start()
 	//停止连接，结束当前连接状态M
 	Stop()
-
 	//从当前连接获取原始的socket TCPConn
 	GetTCPConnection() *net.TCPConn
 	//获取当前连接ID
@@ -27,4 +29,10 @@ type IConnection interface {
 	GetProperty(key string) (interface{}, error)
 	//移除链接属性
 	RemoveProperty(key string)
+	//获取最后一次心跳时间
+	GetLastHeartbeatTime() time.Time
+	//是否授权
+	IsAuth() bool
+	//是否关闭
+	IsClosed() bool
 }

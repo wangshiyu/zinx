@@ -5,6 +5,7 @@ import (
 	"github.com/aceld/zinx/utils"
 	"github.com/aceld/zinx/ziface"
 	"net"
+	"time"
 )
 
 var zinxLogo = `                                        
@@ -61,6 +62,21 @@ func NewServer() ziface.IServer {
 //开启网络服务
 func (s *Server) Start() {
 	fmt.Printf("[START] Server name: %s,listenner at IP: %s, Port %d is starting\n", s.Name, s.IP, s.Port)
+
+	//todo 守护线程
+	go func() {
+		for  {
+			if s.ConnMgr.Len()!=0 {
+				connectionMap := s.ConnMgr.Gets()
+				for _,value := range connectionMap {
+					if value.IsClosed(){
+						value.Stop()
+					}
+				}
+			}
+			time.Sleep(1000000000*10)
+		}
+	}()
 
 	//开启一个go去做服务端Linster业务
 	go func() {

@@ -61,6 +61,11 @@ func (connMgr *ConnManager) Get(connID uint32) (ziface.IConnection, error) {
 	}
 }
 
+//获取全部链接
+func (connMgr *ConnManager) Gets() map[uint32]ziface.IConnection {
+	return connMgr.connections
+}
+
 //获取当前连接
 func (connMgr *ConnManager) Len() int {
 	return len(connMgr.connections)

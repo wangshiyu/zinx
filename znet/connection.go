@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"strings"
 	"sync"
+	"time"
 
 	"github.com/aceld/zinx/utils"
 	"github.com/aceld/zinx/ziface"
@@ -95,7 +97,6 @@ func (c *Connection) StartReader() {
 	fmt.Println("[Reader Goroutine is running]")
 	defer fmt.Println(c.RemoteAddr().String(), "[conn Reader exit!]")
 	defer c.Stop()
-
 	for {
 		select {
 		case <-c.ctx.Done():
@@ -107,7 +108,19 @@ func (c *Connection) StartReader() {
 			//读取客户端的Msg head
 			headData := make([]byte, dp.GetHeadLen())
 			if _, err := io.ReadFull(c.Conn, headData); err != nil {
-				fmt.Println("read msg head error ", err)
+				switch {
+				case strings.Contains(err.Error(), "connection reset"):
+					fmt.Println("Connection refused")
+					c.Stop()
+					return
+				case strings.Contains(err.Error(), "EOF"):
+					fmt.Println("EOF")
+					c.Conn.Close()
+					return
+				default:
+					fmt.Printf("read msg head error Unknown error:%s", err)
+				}
+
 				break
 			}
 			//fmt.Printf("read headData %+v\n", headData)
@@ -163,16 +176,17 @@ func (c *Connection) Stop() {
 	fmt.Println("Conn Stop()...ConnID = ", c.ConnID)
 	//如果当前链接已经关闭
 	c.Lock()
-	defer c.Unlock()
-
 	if c.isClosed == true {
 		return
 	}
 	c.isClosed = true
+	c.Unlock()
 
 	//如果用户注册了该链接的关闭回调业务，那么在此刻应该显示调用
 	c.TcpServer.CallOnConnStop(c)
 
+	c.Lock()
+	defer c.Unlock()
 	// 关闭socket链接
 	c.Conn.Close()
 	//关闭Writer
@@ -272,3 +286,20 @@ func (c *Connection) RemoveProperty(key string) {
 
 	delete(c.property, key)
 }
+
+//最后一次心跳时间
+func (c *Connection) GetLastHeartbeatTime() time.Time{
+	return time.Time{}
+}
+
+//是否授权
+func (c *Connection) IsAuth() bool{
+	return false
+}
+
+//是否关闭
+func (c *Connection) IsClosed() bool{
+	return c.isClosed
+}
+
+

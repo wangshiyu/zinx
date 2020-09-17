@@ -40,9 +40,9 @@ const (
 */
 type Timer struct {
 	//延迟调用函数
-	delayFunc *DelayFunc
+	DelayFunc *DelayFunc
 	//调用时间(unix 时间， 单位ms)
-	unixts int64
+	Unixts int64
 }
 
 //返回1970-1-1至今经历的毫秒数
@@ -57,8 +57,8 @@ func UnixMilli() int64 {
 */
 func NewTimerAt(df *DelayFunc, unixNano int64) *Timer {
 	return &Timer{
-		delayFunc: df,
-		unixts:    unixNano / 1e6, //将纳秒转换成对应的毫秒 ms ，定时器以ms为最小精度
+		DelayFunc: df,
+		Unixts:    unixNano / 1e6, //将纳秒转换成对应的毫秒 ms ，定时器以ms为最小精度
 	}
 }
 
@@ -74,12 +74,12 @@ func (t *Timer) Run() {
 	go func() {
 		now := UnixMilli()
 		//设置的定时器是否在当前时间之后
-		if t.unixts > now {
+		if t.Unixts > now {
 			//睡眠，直至时间超时,已微秒为单位进行睡眠
-			time.Sleep(time.Duration(t.unixts-now) * time.Millisecond)
+			time.Sleep(time.Duration(t.Unixts-now) * time.Millisecond)
 		}
 
 		//调用事先注册好的超时延迟方法
-		t.delayFunc.Call()
+		t.DelayFunc.Call()
 	}()
 }
