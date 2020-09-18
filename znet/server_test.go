@@ -2,7 +2,7 @@ package znet
 
 import (
 	"fmt"
-	"github.com/aceld/zinx/ziface"
+	"github.com/wangshiyu/zinx/ziface"
 	"io"
 	"net"
 	"testing"
@@ -15,7 +15,7 @@ import (
 /*
 	模拟客户端
 */
-func ClientTest(i uint32) {
+func ClientTest(i int32) {
 
 	fmt.Println("Client Test ... start")
 	//3秒之后发起测试请求，给服务端开启服务的机会

@@ -2,10 +2,11 @@ package znet
 
 import (
 	"fmt"
-	"github.com/aceld/zinx/utils"
-	"github.com/aceld/zinx/ziface"
+	cron "github.com/robfig/cron/v3"
+	"github.com/wangshiyu/zinx/components"
+	"github.com/wangshiyu/zinx/utils"
+	"github.com/wangshiyu/zinx/ziface"
 	"net"
-	"time"
 )
 
 var zinxLogo = `                                        
@@ -39,6 +40,10 @@ type Server struct {
 	OnConnStart func(conn ziface.IConnection)
 	//该Server的连接断开时的Hook函数
 	OnConnStop func(conn ziface.IConnection)
+	//组件数据
+	ConnectionDataMap map[struct{}]interface{}
+	//当前Server对应的组件
+	Components []ziface.IComponent
 }
 
 /*
@@ -53,6 +58,12 @@ func NewServer() ziface.IServer {
 		Port:       utils.GlobalObject.TcpPort,
 		msgHandler: NewMsgHandle(),
 		ConnMgr:    NewConnManager(),
+		Components: []ziface.IComponent{},
+	}
+	if utils.GlobalObject.HeartbeatCheck {
+		Heartbeat :=components.Heartbeat{}
+		Heartbeat.TcpServer = s
+		s.AddComponent(&Heartbeat)
 	}
 	return s
 }
@@ -65,17 +76,29 @@ func (s *Server) Start() {
 
 	//todo 守护线程
 	go func() {
-		for  {
-			if s.ConnMgr.Len()!=0 {
-				connectionMap := s.ConnMgr.Gets()
-				for _,value := range connectionMap {
-					if value.IsClosed(){
-						value.Stop()
-					}
+		crontab := cron.New()
+		if len(s.Components) > 0 {
+			for Comp := range s.Components {
+				task := func() {
+					fmt.Println(Comp)
 				}
+				crontab.AddFunc("* * * * * ?", task)
+				crontab.Start()
 			}
-			time.Sleep(1000000000*10)
 		}
+		//
+		//for {
+		//	if s.ConnMgr.Len() != 0 {
+		//		connectionMap := s.ConnMgr.Gets()
+		//		for _, value := range connectionMap {
+		//			if value.IsClosed() {
+		//				value.Stop()
+		//			}
+		//		}
+		//	}
+		//	time.Sleep(1000000000 * 10)
+		//}
+		select {}
 	}()
 
 	//开启一个go去做服务端Linster业务
@@ -101,7 +124,7 @@ func (s *Server) Start() {
 		fmt.Println("start Zinx server  ", s.Name, " succ, now listenning...")
 
 		//TODO server.go 应该有一个自动生成ID的方法
-		var cid uint32
+		var cid int32
 		cid = 0
 
 		//3 启动server网络连接业务
@@ -149,7 +172,7 @@ func (s *Server) Serve() {
 }
 
 //路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
-func (s *Server) AddRouter(msgId uint32, router ziface.IRouter) {
+func (s *Server) AddRouter(msgId int32, router ziface.IRouter) {
 	s.msgHandler.AddRouter(msgId, router)
 }
 
@@ -182,6 +205,11 @@ func (s *Server) CallOnConnStop(conn ziface.IConnection) {
 		fmt.Println("---> CallOnConnStop....")
 		s.OnConnStop(conn)
 	}
+}
+
+//添加组件
+func (s *Server) AddComponent(component ziface.IComponent) {
+	s.Components = append(s.Components, component)
 }
 
 func init() {

@@ -1,6 +1,6 @@
 package znet
 
-import "github.com/aceld/zinx/ziface"
+import "github.com/wangshiyu/zinx/ziface"
 
 type Request struct {
 	conn ziface.IConnection //已经和客户端建立好的 链接
@@ -18,6 +18,6 @@ func (r *Request) GetData() []byte {
 }
 
 //获取请求的消息的ID
-func (r *Request) GetMsgID() uint32 {
+func (r *Request) GetMsgID() int32 {
 	return r.msg.GetMsgId()
 }

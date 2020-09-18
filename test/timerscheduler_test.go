@@ -9,8 +9,8 @@ package test
 
 import (
 	"fmt"
-	"github.com/aceld/zinx/zlog"
-	"github.com/aceld/zinx/ztimer"
+	"github.com/wangshiyu/zinx/zlog"
+	"github.com/wangshiyu/zinx/ztimer"
 	"testing"
 	"time"
 )

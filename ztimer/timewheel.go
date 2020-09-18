@@ -8,7 +8,7 @@ package ztimer
 import (
 	"errors"
 	"fmt"
-	"github.com/aceld/zinx/zlog"
+	"github.com/wangshiyu/zinx/zlog"
 	"sync"
 	"time"
 )
@@ -36,8 +36,8 @@ type TimeWheel struct {
 	//每个刻度所存放的timer定时器的最大容量
 	maxCap int
 	//当前时间轮上的所有timer
-	timerQueue map[int]map[uint32]*Timer //map[int] VALUE  其中int表示当前时间轮的刻度,
-	// map[int] map[uint32] *Timer, uint32表示Timer的id号
+	timerQueue map[int]map[int32]*Timer //map[int] VALUE  其中int表示当前时间轮的刻度,
+	// map[int] map[int32] *Timer, int32表示Timer的id号
 	//下一层时间轮
 	nextTimeWheel *TimeWheel
 	//互斥锁（继承RWMutex的 RWLock,UnLock 等方法）
@@ -57,11 +57,11 @@ func NewTimeWheel(name string, interval int64, scales int, maxCap int) *TimeWhee
 		interval:   interval,
 		scales:     scales,
 		maxCap:     maxCap,
-		timerQueue: make(map[int]map[uint32]*Timer, scales),
+		timerQueue: make(map[int]map[int32]*Timer, scales),
 	}
 	//初始化map
 	for i := 0; i < scales; i++ {
-		tw.timerQueue[i] = make(map[uint32]*Timer, maxCap)
+		tw.timerQueue[i] = make(map[int32]*Timer, maxCap)
 	}
 
 	zlog.Info("Init timerWhell name = ", tw.name, " is Done!")
@@ -79,7 +79,7 @@ func NewTimeWheel(name string, interval int64, scales int, maxCap int) *TimeWhee
 	如果当前的timer的超时时间间隔 小于一个刻度 :
 					如果没有下一轮时间轮
 */
-func (tw *TimeWheel) addTimer(tid uint32, t *Timer, forceNext bool) error {
+func (tw *TimeWheel) addTimer(tid int32, t *Timer, forceNext bool) error {
 	defer func() error {
 		if err := recover(); err != nil {
 			errstr := fmt.Sprintf("addTimer function err : %s", err)
@@ -127,7 +127,7 @@ func (tw *TimeWheel) addTimer(tid uint32, t *Timer, forceNext bool) error {
 }
 
 //添加一个timer到一个时间轮中(非时间轮自转情况)
-func (tw *TimeWheel) AddTimer(tid uint32, t *Timer) error {
+func (tw *TimeWheel) AddTimer(tid int32, t *Timer) error {
 	tw.Lock()
 	defer tw.Unlock()
 
@@ -137,7 +137,7 @@ func (tw *TimeWheel) AddTimer(tid uint32, t *Timer) error {
 /*
 	删除一个定时器，根据定时器的id
 */
-func (tw *TimeWheel) RemoveTimer(tid uint32) {
+func (tw *TimeWheel) RemoveTimer(tid int32) {
 	tw.Lock()
 	defer tw.Unlock()
 
@@ -168,7 +168,7 @@ func (tw *TimeWheel) run() {
 		//取出挂载在当前刻度的全部定时器
 		curTimers := tw.timerQueue[tw.curIndex]
 		//当前定时器要重新添加 所给当前刻度再重新开辟一个map Timer容器
-		tw.timerQueue[tw.curIndex] = make(map[uint32]*Timer, tw.maxCap)
+		tw.timerQueue[tw.curIndex] = make(map[int32]*Timer, tw.maxCap)
 		for tid, timer := range curTimers {
 			//这里属于时间轮自动转动，forceNext设置为true
 			tw.addTimer(tid, timer, true)
@@ -176,7 +176,7 @@ func (tw *TimeWheel) run() {
 
 		//取出下一个刻度 挂载的全部定时器 进行重新添加 (为了安全起见,待考慮)
 		nextTimers := tw.timerQueue[(tw.curIndex+1)%tw.scales]
-		tw.timerQueue[(tw.curIndex+1)%tw.scales] = make(map[uint32]*Timer, tw.maxCap)
+		tw.timerQueue[(tw.curIndex+1)%tw.scales] = make(map[int32]*Timer, tw.maxCap)
 		for tid, timer := range nextTimers {
 			tw.addTimer(tid, timer, true)
 		}
@@ -195,7 +195,7 @@ func (tw *TimeWheel) Run() {
 }
 
 //获取定时器在一段时间间隔内的Timer
-func (tw *TimeWheel) GetTimerWithIn(duration time.Duration) map[uint32]*Timer {
+func (tw *TimeWheel) GetTimerWithIn(duration time.Duration) map[int32]*Timer {
 	//最终触发定时器的一定是挂载最底层时间轮上的定时器
 	//1 找到最底层时间轮
 	leaftw := tw
@@ -206,7 +206,7 @@ func (tw *TimeWheel) GetTimerWithIn(duration time.Duration) map[uint32]*Timer {
 	leaftw.Lock()
 	defer leaftw.Unlock()
 	//返回的Timer集合
-	timerList := make(map[uint32]*Timer)
+	timerList := make(map[int32]*Timer)
 
 	now := UnixMilli()
 

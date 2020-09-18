@@ -1,27 +1,27 @@
 package znet
 
 type Message struct {
-	DataLen uint32 //消息的长度
-	Id      uint32 //消息的ID
+	DataLen int32 //消息的长度
+	Id      int32 //消息的ID
 	Data    []byte //消息的内容
 }
 
 //创建一个Message消息包
-func NewMsgPackage(id uint32, data []byte) *Message {
+func NewMsgPackage(id int32, data []byte) *Message {
 	return &Message{
-		DataLen: uint32(len(data)),
+		DataLen: int32(len(data)),
 		Id:      id,
 		Data:    data,
 	}
 }
 
 //获取消息数据段长度
-func (msg *Message) GetDataLen() uint32 {
+func (msg *Message) GetDataLen() int32 {
 	return msg.DataLen
 }
 
 //获取消息ID
-func (msg *Message) GetMsgId() uint32 {
+func (msg *Message) GetMsgId() int32 {
 	return msg.Id
 }
 
@@ -31,12 +31,12 @@ func (msg *Message) GetData() []byte {
 }
 
 //设置消息数据段长度
-func (msg *Message) SetDataLen(len uint32) {
+func (msg *Message) SetDataLen(len int32) {
 	msg.DataLen = len
 }
 
 //设计消息ID
-func (msg *Message) SetMsgId(msgId uint32) {
+func (msg *Message) SetMsgId(msgId int32) {
 	msg.Id = msgId
 }
 

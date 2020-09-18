@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/aceld/zinx/znet"
+	"github.com/wangshiyu/zinx/znet"
 	"io"
 	"net"
 	"testing"

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"github.com/aceld/zinx/utils"
-	"github.com/aceld/zinx/ziface"
+	"github.com/wangshiyu/zinx/utils"
+	"github.com/wangshiyu/zinx/ziface"
 )
 
 //封包拆包类实例，暂时不需要成员
@@ -17,8 +17,8 @@ func NewDataPack() *DataPack {
 }
 
 //获取包头长度方法
-func (dp *DataPack) GetHeadLen() uint32 {
-	//Id uint32(4字节) +  DataLen uint32(4字节)
+func (dp *DataPack) GetHeadLen() int32 {
+	//Id int32(4字节) +  DataLen int32(4字节)
 	return 8
 }
 

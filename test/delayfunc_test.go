@@ -9,7 +9,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/aceld/zinx/ztimer"
+	"github.com/wangshiyu/zinx/ztimer"
 	"testing"
 )
 

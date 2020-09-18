@@ -8,9 +8,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/aceld/zinx/ziface"
-	"github.com/aceld/zinx/zlog"
-	"github.com/aceld/zinx/znet"
+	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/zlog"
+	"github.com/wangshiyu/zinx/znet"
 )
 
 //ping test 自定义路由

@@ -4,14 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/wangshiyu/zinx/utils"
+	"github.com/wangshiyu/zinx/ziface"
 	"io"
 	"net"
 	"strings"
 	"sync"
-	"time"
-
-	"github.com/aceld/zinx/utils"
-	"github.com/aceld/zinx/ziface"
 )
 
 type Connection struct {
@@ -20,7 +18,7 @@ type Connection struct {
 	//当前连接的socket TCP套接字
 	Conn *net.TCPConn
 	//当前连接的ID 也可以称作为SessionID，ID全局唯一
-	ConnID uint32
+	ConnID int32
 	//消息管理MsgId和对应处理方法的消息管理模块
 	MsgHandler ziface.IMsgHandle
 	//告知该链接已经退出/停止的channel
@@ -36,10 +34,12 @@ type Connection struct {
 	property map[string]interface{}
 	//当前连接的关闭状态
 	isClosed bool
+	//组件数据
+	ConnectionDataMap map[struct{}]interface{}
 }
 
 //创建连接的方法
-func NewConntion(server ziface.IServer, conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) *Connection {
+func NewConntion(server ziface.IServer, conn *net.TCPConn, connID int32, msgHandler ziface.IMsgHandle) *Connection {
 	//初始化Conn属性
 	c := &Connection{
 		TcpServer:   server,
@@ -205,7 +205,7 @@ func (c *Connection) GetTCPConnection() *net.TCPConn {
 }
 
 //获取当前连接ID
-func (c *Connection) GetConnID() uint32 {
+func (c *Connection) GetConnID() int32 {
 	return c.ConnID
 }
 
@@ -215,7 +215,7 @@ func (c *Connection) RemoteAddr() net.Addr {
 }
 
 //直接将Message数据发送数据给远程的TCP客户端
-func (c *Connection) SendMsg(msgId uint32, data []byte) error {
+func (c *Connection) SendMsg(msgId int32, data []byte) error {
 	c.RLock()
 	if c.isClosed == true {
 		c.RUnlock()
@@ -237,7 +237,7 @@ func (c *Connection) SendMsg(msgId uint32, data []byte) error {
 	return nil
 }
 
-func (c *Connection) SendBuffMsg(msgId uint32, data []byte) error {
+func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 	c.RLock()
 	if c.isClosed == true {
 		c.RUnlock()
@@ -285,11 +285,6 @@ func (c *Connection) RemoveProperty(key string) {
 	defer c.Unlock()
 
 	delete(c.property, key)
-}
-
-//最后一次心跳时间
-func (c *Connection) GetLastHeartbeatTime() time.Time{
-	return time.Time{}
 }
 
 //是否授权

@@ -1,0 +1,14 @@
+2020/09/18 21:32:44 [DEBUG]Server.go:52: DoConnecionBegin is Called ... 
+2020/09/18 21:32:44 [DEBUG]Server.go:55: Set conn Name, Home done!
+2020/09/18 21:32:44 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/18 21:32:44 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/18 21:32:45 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/18 21:32:45 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/18 21:32:46 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/18 21:32:46 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/18 21:32:47 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/18 21:32:47 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/18 21:32:48 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/18 21:32:48 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/18 21:32:49 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/18 21:32:49 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message

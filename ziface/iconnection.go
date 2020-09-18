@@ -2,7 +2,6 @@ package ziface
 
 import (
 	"net"
-	"time"
 )
 
 //定义连接接口
@@ -14,14 +13,14 @@ type IConnection interface {
 	//从当前连接获取原始的socket TCPConn
 	GetTCPConnection() *net.TCPConn
 	//获取当前连接ID
-	GetConnID() uint32
+	GetConnID() int32
 	//获取远程客户端地址信息
 	RemoteAddr() net.Addr
 
 	//直接将Message数据发送数据给远程的TCP客户端(无缓冲)
-	SendMsg(msgId uint32, data []byte) error
+	SendMsg(msgId int32, data []byte) error
 	//直接将Message数据发送给远程的TCP客户端(有缓冲)
-	SendBuffMsg(msgId uint32, data []byte) error
+	SendBuffMsg(msgId int32, data []byte) error
 
 	//设置链接属性
 	SetProperty(key string, value interface{})
@@ -29,8 +28,6 @@ type IConnection interface {
 	GetProperty(key string) (interface{}, error)
 	//移除链接属性
 	RemoveProperty(key string)
-	//获取最后一次心跳时间
-	GetLastHeartbeatTime() time.Time
 	//是否授权
 	IsAuth() bool
 	//是否关闭

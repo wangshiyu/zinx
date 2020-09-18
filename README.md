@@ -252,7 +252,7 @@ func main() {
 ```
 #### 4)注册路由
 ```go
-func (s *Server) AddRouter (msgId uint32, router ziface.IRouter) 
+func (s *Server) AddRouter (msgId int32, router ziface.IRouter) 
 ```
 #### 5)注册链接创建Hook函数
 ```go
@@ -284,7 +284,7 @@ func (br *BaseRouter)PostHandle(req ziface.IRequest){}
 ```
 #### 2)获取链接ID
 ```go
-  func (c *Connection) GetConnID() uint32 
+  func (c *Connection) GetConnID() int32 
 ```
 #### 3)获取远程客户端地址信息
 ```go
@@ -292,8 +292,8 @@ func (br *BaseRouter)PostHandle(req ziface.IRequest){}
 ```
 #### 4)发送消息
 ```go
-  func (c *Connection) SendMsg(msgId uint32, data []byte) error 
-  func (c *Connection) SendBuffMsg(msgId uint32, data []byte) error
+  func (c *Connection) SendMsg(msgId int32, data []byte) error 
+  func (c *Connection) SendBuffMsg(msgId int32, data []byte) error
 ```
 #### 5)链接属性
 ```go
