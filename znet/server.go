@@ -31,7 +31,7 @@ type Server struct {
 	//服务绑定的IP地址
 	IP string
 	//服务绑定的端口
-	Port int
+	Port uint32
 	//当前Server的消息管理模块，用来绑定MsgId和对应的处理方法
 	msgHandler ziface.IMsgHandle
 	//当前Server的链接管理器
@@ -124,7 +124,7 @@ func (s *Server) Start() {
 		fmt.Println("start Zinx server  ", s.Name, " succ, now listenning...")
 
 		//TODO server.go 应该有一个自动生成ID的方法
-		var cid int32
+		var cid uint32
 		cid = 0
 
 		//3 启动server网络连接业务
