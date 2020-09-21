@@ -373,3 +373,21 @@
 2020/09/21 22:05:19 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
 2020/09/21 22:05:20 [DEBUG]Server.go:24: Call PingRouter Handle
 2020/09/21 22:05:20 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:24 [DEBUG]Server.go:52: DoConnecionBegin is Called ... 
+2020/09/21 22:56:24 [DEBUG]Server.go:55: Set conn Name, Home done!
+2020/09/21 22:56:24 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:24 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:25 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:25 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:26 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:26 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:27 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:27 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:28 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:28 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:29 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:29 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:30 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:30 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 
+2020/09/21 22:56:31 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/21 22:56:31 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= 

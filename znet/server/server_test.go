@@ -1,8 +1,9 @@
-package znet
+package server
 
 import (
 	"fmt"
-	"github.com/wangshiyu/zinx/ziface"
+	ziface2 "github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/znet"
 	"io"
 	"net"
 	"testing"
@@ -28,8 +29,8 @@ func ClientTest(i int32) {
 	}
 
 	for {
-		dp := NewDataPack()
-		msg, _ := dp.Pack(NewMsgPackage(i, []byte("client test message")))
+		dp := znet.NewDataPack()
+		msg, _ := dp.Pack(znet.NewMsgPackage(i, []byte("client test message")))
 		_, err := conn.Write(msg)
 		if err != nil {
 			fmt.Println("client write err: ", err)
@@ -53,7 +54,7 @@ func ClientTest(i int32) {
 
 		if msgHead.GetDataLen() > 0 {
 			//msg 是有data数据的，需要再次读取data数据
-			msg := msgHead.(*Message)
+			msg := msgHead.(*znet.Message)
 			msg.Data = make([]byte, msg.GetDataLen())
 
 			//根据dataLen从io中读取字节流
@@ -80,7 +81,7 @@ type PingRouter struct {
 }
 
 //Test PreHandle
-func (this *PingRouter) PreHandle(request ziface.IRequest) {
+func (this *PingRouter) PreHandle(request ziface2.IRequest) {
 	fmt.Println("Call Router PreHandle")
 	err := request.GetConnection().SendMsg(1, []byte("before ping ....\n"))
 	if err != nil {
@@ -89,7 +90,7 @@ func (this *PingRouter) PreHandle(request ziface.IRequest) {
 }
 
 //Test Handle
-func (this *PingRouter) Handle(request ziface.IRequest) {
+func (this *PingRouter) Handle(request ziface2.IRequest) {
 	fmt.Println("Call PingRouter Handle")
 	//先读取客户端的数据，再回写ping...ping...ping
 	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
@@ -101,7 +102,7 @@ func (this *PingRouter) Handle(request ziface.IRequest) {
 }
 
 //Test PostHandle
-func (this *PingRouter) PostHandle(request ziface.IRequest) {
+func (this *PingRouter) PostHandle(request ziface2.IRequest) {
 	fmt.Println("Call Router PostHandle")
 	err := request.GetConnection().SendMsg(1, []byte("After ping .....\n"))
 	if err != nil {
@@ -113,7 +114,7 @@ type HelloRouter struct {
 	BaseRouter
 }
 
-func (this *HelloRouter) Handle(request ziface.IRequest) {
+func (this *HelloRouter) Handle(request ziface2.IRequest) {
 	fmt.Println("call helloRouter Handle")
 	fmt.Printf("receive from client msgId=%d, data=%s\n", request.GetMsgID(), string(request.GetData()))
 
@@ -123,7 +124,7 @@ func (this *HelloRouter) Handle(request ziface.IRequest) {
 	}
 }
 
-func DoConnectionBegin(conn ziface.IConnection) {
+func DoConnectionBegin(conn ziface2.IConnection) {
 	fmt.Println("DoConnectionBegin is Called ... ")
 	err := conn.SendMsg(2, []byte("DoConnection BEGIN..."))
 	if err != nil {
@@ -132,7 +133,7 @@ func DoConnectionBegin(conn ziface.IConnection) {
 }
 
 //连接断开的时候执行
-func DoConnectionLost(conn ziface.IConnection) {
+func DoConnectionLost(conn ziface2.IConnection) {
 	fmt.Println("DoConnectionLost is Called ... ")
 }
 

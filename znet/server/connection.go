@@ -1,11 +1,12 @@
-package znet
+package server
 
 import (
 	"context"
 	"errors"
 	"fmt"
 	"github.com/wangshiyu/zinx/utils"
-	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/znet"
 	"io"
 	"net"
 	"strings"
@@ -14,13 +15,13 @@ import (
 
 type Connection struct {
 	//当前Conn属于哪个Server
-	TcpServer ziface.IServer
+	TcpServer server.IServer
 	//当前连接的socket TCP套接字
 	Conn *net.TCPConn
 	//当前连接的ID 也可以称作为SessionID，ID全局唯一
 	ConnID uint32
 	//消息管理MsgId和对应处理方法的消息管理模块
-	MsgHandler ziface.IMsgHandle
+	MsgHandler server.IMsgHandle
 	//告知该链接已经退出/停止的channel
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -39,7 +40,7 @@ type Connection struct {
 }
 
 //创建连接的方法
-func NewConntion(server ziface.IServer, conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) *Connection {
+func NewConntion(server server.IServer, conn *net.TCPConn, connID uint32, msgHandler server.IMsgHandle) *Connection {
 	//初始化Conn属性
 	c := &Connection{
 		TcpServer:   server,
@@ -103,7 +104,7 @@ func (c *Connection) StartReader() {
 			return
 		default:
 			// 创建拆包解包的对象
-			dp := NewDataPack()
+			dp := znet.NewDataPack()
 
 			//读取客户端的Msg head
 			headData := make([]byte, dp.GetHeadLen())
@@ -226,11 +227,11 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 	}
 	c.RUnlock()
 	//将data封包，并且发送
-	dp := NewDataPack()
+	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
 		data = c.TcpServer.GetEncryption().Encryption(data)
 	}
-	msg, err := dp.Pack(NewMsgPackage(msgId, data))
+	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
 		fmt.Println("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")
@@ -249,11 +250,11 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 	}
 	c.RUnlock()
 	//将data封包，并且发送
-	dp := NewDataPack()
+	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
 		data = c.TcpServer.GetEncryption().Encryption(data)
 	}
-	msg, err := dp.Pack(NewMsgPackage(msgId, data))
+	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
 		fmt.Println("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")

@@ -5,13 +5,14 @@ import (
 	"github.com/robfig/cron"
 	"github.com/wangshiyu/zinx/components"
 	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/ziface/server"
 )
 
 /*
 	组件管理模块
 */
 type ComponentManager struct {
-	TcpServer ziface.IServer
+	TcpServer server.IServer
 	//组件数据
 	ConnectionDataMap map[string]interface{}
 	//当前Server对应的组件
@@ -21,7 +22,7 @@ type ComponentManager struct {
 /*
 	创建一个组件管理
 */
-func NewComponentManager(TcpServer ziface.IServer) *ComponentManager {
+func NewComponentManager(TcpServer server.IServer) *ComponentManager {
 	ComponentManager := &ComponentManager{
 		componentMap: make(map[string]ziface.IComponent),
 		TcpServer:    TcpServer,

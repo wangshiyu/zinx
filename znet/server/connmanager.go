@@ -1,9 +1,9 @@
-package znet
+package server
 
 import (
 	"errors"
 	"fmt"
-	"github.com/wangshiyu/zinx/ziface"
+	server "github.com/wangshiyu/zinx/ziface/server"
 	"sync"
 )
 
@@ -11,8 +11,8 @@ import (
 	连接管理模块
 */
 type ConnManager struct {
-	connections map[uint32]ziface.IConnection //管理的连接信息
-	connLock    sync.RWMutex                  //读写连接的读写锁
+	connections map[uint32]server.IConnection //管理的连接信息
+	connLock    sync.RWMutex                   //读写连接的读写锁
 }
 
 /*
@@ -20,12 +20,12 @@ type ConnManager struct {
 */
 func NewConnManager() *ConnManager {
 	return &ConnManager{
-		connections: make(map[uint32]ziface.IConnection),
+		connections: make(map[uint32]server.IConnection),
 	}
 }
 
 //添加链接
-func (connMgr *ConnManager) Add(conn ziface.IConnection) {
+func (connMgr *ConnManager) Add(conn server.IConnection) {
 	//保护共享资源Map 加写锁
 	connMgr.connLock.Lock()
 	defer connMgr.connLock.Unlock()
@@ -37,7 +37,7 @@ func (connMgr *ConnManager) Add(conn ziface.IConnection) {
 }
 
 //删除连接
-func (connMgr *ConnManager) Remove(conn ziface.IConnection) {
+func (connMgr *ConnManager) Remove(conn server.IConnection) {
 	//保护共享资源Map 加写锁
 	connMgr.connLock.Lock()
 	defer connMgr.connLock.Unlock()
@@ -49,7 +49,7 @@ func (connMgr *ConnManager) Remove(conn ziface.IConnection) {
 }
 
 //利用ConnID获取链接
-func (connMgr *ConnManager) Get(connID uint32) (ziface.IConnection, error) {
+func (connMgr *ConnManager) Get(connID uint32) (server.IConnection, error) {
 	//保护共享资源Map 加读锁
 	connMgr.connLock.RLock()
 	defer connMgr.connLock.RUnlock()
@@ -62,7 +62,7 @@ func (connMgr *ConnManager) Get(connID uint32) (ziface.IConnection, error) {
 }
 
 //获取全部链接
-func (connMgr *ConnManager) Gets() map[uint32]ziface.IConnection {
+func (connMgr *ConnManager) Gets() map[uint32]server.IConnection {
 	return connMgr.connections
 }
 

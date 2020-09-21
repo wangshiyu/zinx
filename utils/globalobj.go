@@ -2,7 +2,7 @@ package utils
 
 import (
 	"encoding/json"
-	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/ziface/server"
 	"github.com/wangshiyu/zinx/zlog"
 	"io/ioutil"
 	"os"
@@ -16,7 +16,7 @@ type GlobalObj struct {
 	/*
 		Server
 	*/
-	TcpServer ziface.IServer //当前Zinx的全局Server对象
+	TcpServer server.IServer //当前Zinx的全局Server对象
 	Host      string         //当前服务器主机IP
 	TcpPort   uint32         //当前服务器主机监听端口号
 	Name      string         //当前服务器名称

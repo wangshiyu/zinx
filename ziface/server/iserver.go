@@ -1,4 +1,6 @@
-package ziface
+package server
+
+import "github.com/wangshiyu/zinx/ziface"
 
 //定义服务器接口
 type IServer interface {
@@ -21,7 +23,7 @@ type IServer interface {
 	//调用连接OnConnStop Hook函数
 	CallOnConnStop(conn IConnection)
 	//获取组件管理器
-	GetComponentMgr() IComponentManager
+	GetComponentMgr() ziface.IComponentManager
 	//获取加密
-	GetEncryption() IEncryption
+	GetEncryption() ziface.IEncryption
 }

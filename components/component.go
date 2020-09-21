@@ -1,12 +1,12 @@
 package components
 
 import (
-	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/ziface/server"
 )
 
 type Component struct {
 	//当前Conn属于哪个Server
-	TcpServer ziface.IServer
+	TcpServer server.IServer
 	//Cron表达式 运行时间
 	Crons []string
 }

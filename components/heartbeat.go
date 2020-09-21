@@ -1,7 +1,7 @@
 package components
 
 import (
-	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/ziface/server"
 )
 
 type Heartbeat struct {
@@ -22,7 +22,7 @@ func (c *Heartbeat) Init() {
 	c.Crons = []string{"* * * * * *"}
 }
 
-func NewHeartbeat(TcpServer ziface.IServer) *Heartbeat {
+func NewHeartbeat(TcpServer server.IServer) *Heartbeat {
 	heartbeat := Heartbeat{}
 	heartbeat.TcpServer = TcpServer
 	return &heartbeat

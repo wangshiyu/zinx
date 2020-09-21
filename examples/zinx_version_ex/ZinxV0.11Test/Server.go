@@ -8,18 +8,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/wangshiyu/zinx/ziface"
+	ziface2 "github.com/wangshiyu/zinx/ziface/server"
 	"github.com/wangshiyu/zinx/zlog"
-	"github.com/wangshiyu/zinx/znet"
+	"github.com/wangshiyu/zinx/znet/server"
 )
 
 //ping test 自定义路由
 type PingRouter struct {
-	znet.BaseRouter
+	server.BaseRouter
 }
 
 //Ping Handle
-func (this *PingRouter) Handle(request ziface.IRequest) {
+func (this *PingRouter) Handle(request ziface2.IRequest) {
 
 	zlog.Debug("Call PingRouter Handle")
 	//先读取客户端的数据，再回写ping...ping...ping
@@ -32,11 +32,11 @@ func (this *PingRouter) Handle(request ziface.IRequest) {
 }
 
 type HelloZinxRouter struct {
-	znet.BaseRouter
+	server.BaseRouter
 }
 
 //HelloZinxRouter Handle
-func (this *HelloZinxRouter) Handle(request ziface.IRequest) {
+func (this *HelloZinxRouter) Handle(request ziface2.IRequest) {
 	zlog.Debug("Call HelloZinxRouter Handle")
 	//先读取客户端的数据，再回写ping...ping...ping
 	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
@@ -48,7 +48,7 @@ func (this *HelloZinxRouter) Handle(request ziface.IRequest) {
 }
 
 //创建连接的时候执行
-func DoConnectionBegin(conn ziface.IConnection) {
+func DoConnectionBegin(conn ziface2.IConnection) {
 	zlog.Debug("DoConnecionBegin is Called ... ")
 
 	//设置两个链接属性，在连接创建之后
@@ -63,7 +63,7 @@ func DoConnectionBegin(conn ziface.IConnection) {
 }
 
 //连接断开的时候执行
-func DoConnectionLost(conn ziface.IConnection) {
+func DoConnectionLost(conn ziface2.IConnection) {
 	//在连接销毁之前，查询conn的Name，Home属性
 	if name, err := conn.GetProperty("Name"); err == nil {
 		zlog.Error("Conn Property Name = ", name)
@@ -78,7 +78,7 @@ func DoConnectionLost(conn ziface.IConnection) {
 
 func main() {
 	//创建一个server句柄
-	s := znet.NewServer()
+	s := server.NewServer()
 
 	//注册链接hook回调函数
 	s.SetOnConnStart(DoConnectionBegin)
