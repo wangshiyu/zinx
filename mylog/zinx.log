@@ -12,3 +12,172 @@
 2020/09/18 21:32:48 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
 2020/09/18 21:32:49 [DEBUG]Server.go:24: Call PingRouter Handle
 2020/09/18 21:32:49 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:00 [DEBUG]Server.go:52: DoConnecionBegin is Called ... 
+2020/09/20 11:27:00 [DEBUG]Server.go:55: Set conn Name, Home done!
+2020/09/20 11:27:00 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:00 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:01 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:01 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:02 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:02 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:03 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:03 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:04 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:04 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:05 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:05 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:06 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:06 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:07 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:07 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:08 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:08 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:28 [DEBUG]Server.go:52: DoConnecionBegin is Called ... 
+2020/09/20 11:27:28 [DEBUG]Server.go:55: Set conn Name, Home done!
+2020/09/20 11:27:28 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:28 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:29 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:29 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:30 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:30 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:31 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:31 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:32 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:32 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:33 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:33 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:34 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:34 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:35 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:35 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:36 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:36 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:37 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:37 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:38 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:38 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:39 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:39 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:40 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:40 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:41 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:27:41 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:27:41 [ERROR]Server.go:69: Conn Property Name =  Aceld
+2020/09/20 11:27:41 [ERROR]Server.go:73: Conn Property Home =  https://www.jianshu.com/u/35261429b7f1
+2020/09/20 11:27:41 [DEBUG]Server.go:76: DoConneciotnLost is Called ... 
+2020/09/20 11:35:31 [DEBUG]Server.go:52: DoConnecionBegin is Called ... 
+2020/09/20 11:35:31 [DEBUG]Server.go:55: Set conn Name, Home done!
+2020/09/20 11:35:31 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:35:31 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:35:32 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:35:32 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:35:33 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:35:33 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:35:34 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:35:34 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:22 [DEBUG]Server.go:52: DoConnecionBegin is Called ... 
+2020/09/20 11:37:22 [DEBUG]Server.go:55: Set conn Name, Home done!
+2020/09/20 11:37:22 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:22 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:23 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:23 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:24 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:24 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:25 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:25 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:26 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:26 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:27 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:27 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:28 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:28 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:29 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:29 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:30 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:30 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:31 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:31 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:32 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:32 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:33 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:33 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:34 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:34 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:35 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:35 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:36 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:36 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:37 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:37 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:38 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:38 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:39 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:39 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:40 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:40 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:41 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:41 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:42 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:42 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:43 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:43 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:44 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:44 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:45 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:45 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:46 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:46 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:47 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:47 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:48 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:48 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:49 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:49 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:50 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:50 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:51 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:51 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:52 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:52 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:53 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:53 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:54 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:54 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:55 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:55 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 11:37:56 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 11:37:56 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:16 [DEBUG]Server.go:52: DoConnecionBegin is Called ... 
+2020/09/20 17:12:16 [DEBUG]Server.go:55: Set conn Name, Home done!
+2020/09/20 17:12:16 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:16 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:17 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:17 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:18 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:18 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:19 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:19 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:20 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:20 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:21 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:21 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:22 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:22 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:23 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:23 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:24 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:24 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:25 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:25 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:26 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:26 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:27 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:27 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:28 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:28 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:29 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:29 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:30 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:30 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message
+2020/09/20 17:12:31 [DEBUG]Server.go:24: Call PingRouter Handle
+2020/09/20 17:12:31 [DEBUG]Server.go:26: recv from client : msgId= 0 , data= Zinx V0.8 Client0 Test Message

@@ -5,4 +5,6 @@ type IComponent interface {
 	Init()
 	//运行
 	Run()
+
+	GetCrons() []string
 }

@@ -20,6 +20,6 @@ type IServer interface {
 	CallOnConnStart(conn IConnection)
 	//调用连接OnConnStop Hook函数
 	CallOnConnStop(conn IConnection)
-	//组件
-	AddComponent(component IComponent)
+	//获取组件管理器
+	GetComponentMgr() IComponentManager
 }

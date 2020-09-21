@@ -19,3 +19,6 @@ func (c *Component) Init() {
 
 }
 
+func (c *Component) GetCrons() []string {
+	return c.Crons
+}

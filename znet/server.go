@@ -2,8 +2,6 @@ package znet
 
 import (
 	"fmt"
-	cron "github.com/robfig/cron/v3"
-	"github.com/wangshiyu/zinx/components"
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface"
 	"net"
@@ -40,10 +38,8 @@ type Server struct {
 	OnConnStart func(conn ziface.IConnection)
 	//该Server的连接断开时的Hook函数
 	OnConnStop func(conn ziface.IConnection)
-	//组件数据
-	ConnectionDataMap map[struct{}]interface{}
-	//当前Server对应的组件
-	Components []ziface.IComponent
+	//组件管理
+	ComponentManager ziface.IComponentManager
 }
 
 /*
@@ -58,13 +54,8 @@ func NewServer() ziface.IServer {
 		Port:       utils.GlobalObject.TcpPort,
 		msgHandler: NewMsgHandle(),
 		ConnMgr:    NewConnManager(),
-		Components: []ziface.IComponent{},
 	}
-	if utils.GlobalObject.HeartbeatCheck {
-		Heartbeat :=components.Heartbeat{}
-		Heartbeat.TcpServer = s
-		s.AddComponent(&Heartbeat)
-	}
+	s.ComponentManager = NewComponentManager(s)
 	return s
 }
 
@@ -74,18 +65,20 @@ func NewServer() ziface.IServer {
 func (s *Server) Start() {
 	fmt.Printf("[START] Server name: %s,listenner at IP: %s, Port %d is starting\n", s.Name, s.IP, s.Port)
 
+	go s.ComponentManager.Runs()
 	//todo 守护线程
 	go func() {
-		crontab := cron.New()
-		if len(s.Components) > 0 {
-			for Comp := range s.Components {
-				task := func() {
-					fmt.Println(Comp)
-				}
-				crontab.AddFunc("* * * * * ?", task)
-				crontab.Start()
-			}
-		}
+
+		//crontab := cron.New()
+		//if len(s.Components) > 0 {
+		//	for Comp := range s.Components {
+		//		task := func() {
+		//			Comp
+		//		}
+		//		crontab.AddFunc("* * * * * ?", task)
+		//		crontab.Start()
+		//	}
+		//}
 		//
 		//for {
 		//	if s.ConnMgr.Len() != 0 {
@@ -207,9 +200,9 @@ func (s *Server) CallOnConnStop(conn ziface.IConnection) {
 	}
 }
 
-//添加组件
-func (s *Server) AddComponent(component ziface.IComponent) {
-	s.Components = append(s.Components, component)
+//获取组件管理器
+func (s *Server) GetComponentMgr() ziface.IComponentManager {
+	return s.ComponentManager
 }
 
 func init() {
