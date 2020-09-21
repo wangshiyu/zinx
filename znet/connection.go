@@ -141,6 +141,9 @@ func (c *Connection) StartReader() {
 					break
 				}
 			}
+			if utils.GlobalObject.Encryption {
+				data = c.TcpServer.GetEncryption().Decrypt(data)
+			}
 			msg.SetData(data)
 
 			//得到当前客户端请求的Request数据
@@ -222,15 +225,16 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 		return errors.New("connection closed when send msg")
 	}
 	c.RUnlock()
-
 	//将data封包，并且发送
 	dp := NewDataPack()
+	if utils.GlobalObject.Encryption {
+		data = c.TcpServer.GetEncryption().Encryption(data)
+	}
 	msg, err := dp.Pack(NewMsgPackage(msgId, data))
 	if err != nil {
 		fmt.Println("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")
 	}
-
 	//写回客户端
 	c.msgChan <- msg
 
@@ -244,15 +248,16 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 		return errors.New("Connection closed when send buff msg")
 	}
 	c.RUnlock()
-
 	//将data封包，并且发送
 	dp := NewDataPack()
+	if utils.GlobalObject.Encryption {
+		data = c.TcpServer.GetEncryption().Encryption(data)
+	}
 	msg, err := dp.Pack(NewMsgPackage(msgId, data))
 	if err != nil {
 		fmt.Println("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")
 	}
-
 	//写回客户端
 	c.msgBuffChan <- msg
 

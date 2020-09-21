@@ -40,6 +40,8 @@ type Server struct {
 	OnConnStop func(conn ziface.IConnection)
 	//组件管理
 	ComponentManager ziface.IComponentManager
+	//加密
+	Encryption ziface.IEncryption
 }
 
 /*
@@ -54,6 +56,7 @@ func NewServer() ziface.IServer {
 		Port:       utils.GlobalObject.TcpPort,
 		msgHandler: NewMsgHandle(),
 		ConnMgr:    NewConnManager(),
+		Encryption: NewRSA2(),
 	}
 	s.ComponentManager = NewComponentManager(s)
 	return s
@@ -203,6 +206,10 @@ func (s *Server) CallOnConnStop(conn ziface.IConnection) {
 //获取组件管理器
 func (s *Server) GetComponentMgr() ziface.IComponentManager {
 	return s.ComponentManager
+}
+
+func (s *Server) GetEncryption () ziface.IEncryption{
+	return s.Encryption
 }
 
 func init() {

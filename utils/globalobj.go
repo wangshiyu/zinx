@@ -45,6 +45,9 @@ type GlobalObj struct {
 
 	HeartbeatCheck bool //心跳检测
 	AuthCheck      bool //授权检测
+	Encryption     bool //加密
+	EncryptionPrivateKey string
+	EncryptionPublicKey string
 }
 
 /*

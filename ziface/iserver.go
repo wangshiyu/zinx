@@ -22,4 +22,6 @@ type IServer interface {
 	CallOnConnStop(conn IConnection)
 	//获取组件管理器
 	GetComponentMgr() IComponentManager
+	//获取加密
+	GetEncryption() IEncryption
 }
