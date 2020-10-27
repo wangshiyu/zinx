@@ -1,4 +1,4 @@
-package server
+package client
 
 import (
 	"context"
@@ -6,21 +6,17 @@ import (
 	"fmt"
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface"
-	"github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/ziface/client"
 	"github.com/wangshiyu/zinx/znet"
 	"io"
 	"net"
 	"strings"
-	"sync"
 )
 
 type Connection struct {
-	//当前Conn属于哪个Server
-	TcpServer server.IServer
+	Client client.IClient
 	//当前连接的socket TCP套接字
-	Conn *net.TCPConn
-	//当前连接的ID 也可以称作为SessionID，ID全局唯一
-	ConnID uint32
+	Conn net.Conn
 	//消息管理MsgId和对应处理方法的消息管理模块
 	MsgHandler ziface.IMsgHandle
 	//告知该链接已经退出/停止的channel
@@ -30,8 +26,6 @@ type Connection struct {
 	msgChan chan []byte
 	//有缓冲管道，用于读、写两个goroutine之间的消息通信
 	msgBuffChan chan []byte
-
-	sync.RWMutex
 	//链接属性
 	property map[string]interface{}
 	//当前连接的关闭状态
@@ -41,21 +35,17 @@ type Connection struct {
 }
 
 //创建连接的方法
-func NewConntion(server server.IServer, conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) *Connection {
+func NewConntion(Client client.IClient, conn net.Conn, msgHandler ziface.IMsgHandle) *Connection {
 	//初始化Conn属性
 	c := &Connection{
-		TcpServer:   server,
+		Client:      Client,
 		Conn:        conn,
-		ConnID:      connID,
 		isClosed:    false,
 		MsgHandler:  msgHandler,
 		msgChan:     make(chan []byte),
 		msgBuffChan: make(chan []byte, utils.GlobalObject.MaxMsgChanLen),
 		property:    make(map[string]interface{}),
 	}
-
-	//将新创建的Conn添加到链接管理中
-	c.TcpServer.GetConnMgr().Add(c)
 	return c
 }
 
@@ -122,7 +112,6 @@ func (c *Connection) StartReader() {
 				default:
 					fmt.Printf("read msg head error Unknown error:%s", err)
 				}
-
 				break
 			}
 			//fmt.Printf("read headData %+v\n", headData)
@@ -144,7 +133,7 @@ func (c *Connection) StartReader() {
 				}
 			}
 			if utils.GlobalObject.Encryption {
-				data = c.TcpServer.GetEncryption().Decrypt(data)
+				data = c.Client.GetEncryption().Decrypt(data)
 			}
 			msg.SetData(data)
 
@@ -173,45 +162,31 @@ func (c *Connection) Start() {
 	//2 开启用于写回客户端数据流程的Goroutine
 	go c.StartWriter()
 	//按照用户传递进来的创建连接时需要处理的业务，执行钩子方法
-	c.TcpServer.CallOnConnStart(c)
+	//c.TcpServer.CallOnConnStart(c)
 }
 
 //停止连接，结束当前连接状态M
 func (c *Connection) Stop() {
-	fmt.Println("Conn Stop()...ConnID = ", c.ConnID)
 	//如果当前链接已经关闭
-	c.Lock()
 	if c.isClosed == true {
 		return
 	}
 	c.isClosed = true
-	c.Unlock()
 
 	//如果用户注册了该链接的关闭回调业务，那么在此刻应该显示调用
-	c.TcpServer.CallOnConnStop(c)
-
-	c.Lock()
-	defer c.Unlock()
+	//c.TcpServer.CallOnConnStop(c)
 	// 关闭socket链接
 	c.Conn.Close()
 	//关闭Writer
 	c.cancel()
-
-	//将链接从连接管理器中删除
-	c.TcpServer.GetConnMgr().Remove(c)
 
 	//关闭该链接全部管道
 	close(c.msgBuffChan)
 }
 
 //从当前连接获取原始的socket TCPConn
-func (c *Connection) GetTCPConnection() *net.TCPConn {
-	return c.Conn
-}
-
-//获取当前连接ID
-func (c *Connection) GetConnID() uint32 {
-	return c.ConnID
+func (c *Connection) GetTCPConnection() *net.Conn {
+	return &c.Conn
 }
 
 //获取远程客户端地址信息
@@ -221,16 +196,13 @@ func (c *Connection) RemoteAddr() net.Addr {
 
 //直接将Message数据发送数据给远程的TCP客户端
 func (c *Connection) SendMsg(msgId int32, data []byte) error {
-	c.RLock()
 	if c.isClosed == true {
-		c.RUnlock()
 		return errors.New("connection closed when send msg")
 	}
-	c.RUnlock()
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
-		data = c.TcpServer.GetEncryption().Encryption(data)
+		data = c.Client.GetEncryption().Encryption(data)
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
@@ -244,16 +216,13 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 }
 
 func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
-	c.RLock()
 	if c.isClosed == true {
-		c.RUnlock()
 		return errors.New("Connection closed when send buff msg")
 	}
-	c.RUnlock()
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
-		data = c.TcpServer.GetEncryption().Encryption(data)
+		data = c.Client.GetEncryption().Encryption(data)
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
@@ -268,17 +237,11 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 
 //设置链接属性
 func (c *Connection) SetProperty(key string, value interface{}) {
-	c.Lock()
-	defer c.Unlock()
-
 	c.property[key] = value
 }
 
 //获取链接属性
 func (c *Connection) GetProperty(key string) (interface{}, error) {
-	c.RLock()
-	defer c.RUnlock()
-
 	if value, ok := c.property[key]; ok {
 		return value, nil
 	} else {
@@ -288,20 +251,15 @@ func (c *Connection) GetProperty(key string) (interface{}, error) {
 
 //移除链接属性
 func (c *Connection) RemoveProperty(key string) {
-	c.Lock()
-	defer c.Unlock()
-
 	delete(c.property, key)
 }
 
 //是否授权
-func (c *Connection) IsAuth() bool{
+func (c *Connection) IsAuth() bool {
 	return false
 }
 
 //是否关闭
-func (c *Connection) IsClosed() bool{
+func (c *Connection) IsClosed() bool {
 	return c.isClosed
 }
-
-

@@ -2,7 +2,8 @@ package server
 
 import (
 	"fmt"
-	ziface2 "github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/ziface/server"
 	"github.com/wangshiyu/zinx/znet"
 	"io"
 	"net"
@@ -77,54 +78,54 @@ func ClientTest(i int32) {
 
 //ping test 自定义路由
 type PingRouter struct {
-	BaseRouter
+	znet.BaseRouter
 }
 
 //Test PreHandle
-func (this *PingRouter) PreHandle(request ziface2.IRequest) {
+func (this *PingRouter) PreHandle(request ziface.IRequest) {
 	fmt.Println("Call Router PreHandle")
-	err := request.GetConnection().SendMsg(1, []byte("before ping ....\n"))
+	err := request.GetConnection().(server.IConnection).SendMsg(1, []byte("before ping ....\n"))
 	if err != nil {
 		fmt.Println("preHandle SendMsg err: ", err)
 	}
 }
 
 //Test Handle
-func (this *PingRouter) Handle(request ziface2.IRequest) {
+func (this *PingRouter) Handle(request ziface.IRequest) {
 	fmt.Println("Call PingRouter Handle")
 	//先读取客户端的数据，再回写ping...ping...ping
 	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
 
-	err := request.GetConnection().SendMsg(1, []byte("ping...ping...ping\n"))
+	err := request.GetConnection().(server.IConnection).SendMsg(1, []byte("ping...ping...ping\n"))
 	if err != nil {
 		fmt.Println("Handle SendMsg err: ", err)
 	}
 }
 
 //Test PostHandle
-func (this *PingRouter) PostHandle(request ziface2.IRequest) {
+func (this *PingRouter) PostHandle(request ziface.IRequest) {
 	fmt.Println("Call Router PostHandle")
-	err := request.GetConnection().SendMsg(1, []byte("After ping .....\n"))
+	err := request.GetConnection().(server.IConnection).SendMsg(1, []byte("After ping .....\n"))
 	if err != nil {
 		fmt.Println("Post SendMsg err: ", err)
 	}
 }
 
 type HelloRouter struct {
-	BaseRouter
+	znet.BaseRouter
 }
 
-func (this *HelloRouter) Handle(request ziface2.IRequest) {
+func (this *HelloRouter) Handle(request ziface.IRequest) {
 	fmt.Println("call helloRouter Handle")
 	fmt.Printf("receive from client msgId=%d, data=%s\n", request.GetMsgID(), string(request.GetData()))
 
-	err := request.GetConnection().SendMsg(2, []byte("hello zix hello Router"))
+	err := request.GetConnection().(server.IConnection).SendMsg(2, []byte("hello zix hello Router"))
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
-func DoConnectionBegin(conn ziface2.IConnection) {
+func DoConnectionBegin(conn server.IConnection) {
 	fmt.Println("DoConnectionBegin is Called ... ")
 	err := conn.SendMsg(2, []byte("DoConnection BEGIN..."))
 	if err != nil {
@@ -133,7 +134,7 @@ func DoConnectionBegin(conn ziface2.IConnection) {
 }
 
 //连接断开的时候执行
-func DoConnectionLost(conn ziface2.IConnection) {
+func DoConnectionLost(conn server.IConnection) {
 	fmt.Println("DoConnectionLost is Called ... ")
 }
 

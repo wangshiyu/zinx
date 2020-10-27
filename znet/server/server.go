@@ -33,7 +33,7 @@ type Server struct {
 	//服务绑定的端口
 	Port uint32
 	//当前Server的消息管理模块，用来绑定MsgId和对应的处理方法
-	msgHandler server.IMsgHandle
+	msgHandler ziface.IMsgHandle
 	//当前Server的链接管理器
 	ConnMgr server.IConnManager
 	//该Server的连接创建时Hook函数
@@ -56,7 +56,7 @@ func NewServer() server.IServer {
 		IPVersion:  "tcp4",
 		IP:         utils.GlobalObject.Host,
 		Port:       utils.GlobalObject.TcpPort,
-		msgHandler: NewMsgHandle(),
+		msgHandler: znet.NewMsgHandle(),
 		ConnMgr:    NewConnManager(),
 		Encryption: znet.NewRSA2(),
 	}
@@ -170,7 +170,7 @@ func (s *Server) Serve() {
 }
 
 //路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
-func (s *Server) AddRouter(msgId int32, router server.IRouter) {
+func (s *Server) AddRouter(msgId int32, router ziface.IRouter) {
 	s.msgHandler.AddRouter(msgId, router)
 }
 

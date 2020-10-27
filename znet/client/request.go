@@ -1,12 +1,12 @@
-package server
+package client
 
 import (
 	"github.com/wangshiyu/zinx/ziface"
-	"github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/ziface/client"
 )
 
 type Request struct {
-	conn server.IConnection //已经和客户端建立好的 链接
+	conn client.IConnection //已经和客户端建立好的 链接
 	msg  ziface.IMessage    //客户端请求的数据
 }
 

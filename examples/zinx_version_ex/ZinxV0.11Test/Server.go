@@ -8,40 +8,41 @@ package main
 
 import (
 	"fmt"
+	"github.com/wangshiyu/zinx/ziface"
 	ziface2 "github.com/wangshiyu/zinx/ziface/server"
 	"github.com/wangshiyu/zinx/zlog"
+	"github.com/wangshiyu/zinx/znet"
 	"github.com/wangshiyu/zinx/znet/server"
 )
 
 //ping test 自定义路由
 type PingRouter struct {
-	server.BaseRouter
+	znet.BaseRouter
 }
 
 //Ping Handle
-func (this *PingRouter) Handle(request ziface2.IRequest) {
+func (this *PingRouter) Handle(request ziface.IRequest) {
 
 	zlog.Debug("Call PingRouter Handle")
 	//先读取客户端的数据，再回写ping...ping...ping
 	zlog.Debug("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
-
-	err := request.GetConnection().SendBuffMsg(0, []byte("ping...ping...ping"))
+	err := request.GetConnection().(ziface2.IConnection).SendBuffMsg(0, []byte("ping...ping...ping"))
 	if err != nil {
 		zlog.Error(err)
 	}
 }
 
 type HelloZinxRouter struct {
-	server.BaseRouter
+	znet.BaseRouter
 }
 
 //HelloZinxRouter Handle
-func (this *HelloZinxRouter) Handle(request ziface2.IRequest) {
+func (this *HelloZinxRouter) Handle(request ziface.IRequest) {
 	zlog.Debug("Call HelloZinxRouter Handle")
 	//先读取客户端的数据，再回写ping...ping...ping
 	fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
 	zlog.Debug("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
-	err := request.GetConnection().SendBuffMsg(1, []byte("Hello Zinx Router V0.10"))
+	err := request.GetConnection().(ziface2.IConnection).SendBuffMsg(1, []byte("Hello Zinx Router V0.10"))
 	if err != nil {
 		zlog.Error(err)
 	}

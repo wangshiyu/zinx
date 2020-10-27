@@ -5,14 +5,15 @@ import (
 )
 
 type Heartbeat struct {
-	Component
+	TcpServer server.IServer
+	Crons     []string
 }
 
 func (c *Heartbeat) Run() {
 	connectionMap := c.TcpServer.GetConnMgr().Gets()
-	if len(connectionMap)>0 {
+	if len(connectionMap) > 0 {
 		for _, value := range connectionMap {
-			value.SendBuffMsg(-1,[]byte("ping"))
+			value.SendBuffMsg(-1, []byte("ping"))
 		}
 	}
 }
@@ -20,6 +21,10 @@ func (c *Heartbeat) Run() {
 func (c *Heartbeat) Init() {
 	//一秒运行一次
 	c.Crons = []string{"* * * * * *"}
+}
+
+func (c *Heartbeat) GetCrons() []string {
+	return c.Crons
 }
 
 func NewHeartbeat(TcpServer server.IServer) *Heartbeat {

@@ -3,7 +3,7 @@ package server
 import (
 	"errors"
 	"fmt"
-	server "github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/ziface/server"
 	"sync"
 )
 
@@ -12,7 +12,7 @@ import (
 */
 type ConnManager struct {
 	connections map[uint32]server.IConnection //管理的连接信息
-	connLock    sync.RWMutex                   //读写连接的读写锁
+	connLock    sync.RWMutex                  //读写连接的读写锁
 }
 
 /*

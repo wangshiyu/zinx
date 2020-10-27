@@ -4,21 +4,21 @@ import (
 	"github.com/wangshiyu/zinx/ziface/server"
 )
 
-type Component struct {
+type ServerComponent struct {
 	//当前Conn属于哪个Server
 	TcpServer server.IServer
 	//Cron表达式 运行时间
 	Crons []string
 }
 
-func (c *Component) Run() {
+func (c *ServerComponent) Run() {
 
 }
 
-func (c *Component) Init() {
+func (c *ServerComponent) Init() {
 
 }
 
-func (c *Component) GetCrons() []string {
+func (c *ServerComponent) GetCrons() []string {
 	return c.Crons
 }

@@ -1,4 +1,4 @@
-package server
+package ziface
 
 /*
 	消息管理抽象层
