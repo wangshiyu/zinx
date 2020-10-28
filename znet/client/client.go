@@ -74,11 +74,13 @@ func (c *Client) AddRouter(msgId int32, router ziface.IRouter) {
 }
 
 func NewClient(Name string) *Client {
-	return &Client{
+	Client := &Client{
 		Name:       Name,
 		IP:         utils.GlobalObject.Host,
 		Port:       utils.GlobalObject.TcpPort,
 		MsgHandler: znet.NewMsgHandle(),
 		Encryption: znet.NewRSA2(),
 	}
+	Client.ComponentManager = NewComponentManager(Client)
+	return Client
 }

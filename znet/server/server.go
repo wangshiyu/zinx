@@ -60,7 +60,7 @@ func NewServer() server.IServer {
 		ConnMgr:    NewConnManager(),
 		Encryption: znet.NewRSA2(),
 	}
-	s.ComponentManager = znet.NewComponentManager(s)
+	s.ComponentManager = NewComponentManager(s)
 	return s
 }
 

@@ -1,4 +1,4 @@
-package components
+package server
 
 import (
 	"github.com/wangshiyu/zinx/ziface/server"
