@@ -31,12 +31,17 @@ type Client struct {
 }
 
 func (c *Client) Start() {
-	conn, err := net.Dial("tcp", c.IP+":"+string(c.Port))
+	address := fmt.Sprintf("%s:%d", c.IP, c.Port)
+	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		fmt.Println("resolve tcp addr err: ", err)
 		return
 	}
+	fmt.Println("create tcp addr: ", address)
 	c.Connection = NewConntion(c, conn, znet.NewMsgHandle())
+	go c.ComponentManager.Runs()
+	go c.Connection.Start()
+	select {}
 }
 
 func (c *Client) Stop() {

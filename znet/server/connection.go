@@ -7,6 +7,7 @@ import (
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface"
 	"github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/zlog"
 	"github.com/wangshiyu/zinx/znet"
 	"io"
 	"net"
@@ -250,6 +251,8 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 		return errors.New("Connection closed when send buff msg")
 	}
 	c.RUnlock()
+	zlog.Debug("Server SendBuffMsg data = ", string(data))
+	fmt.Println("Server SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {

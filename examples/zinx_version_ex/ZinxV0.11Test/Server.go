@@ -86,7 +86,7 @@ func main() {
 	s.SetOnConnStop(DoConnectionLost)
 
 	//配置路由
-	s.AddRouter(0, &PingRouter{})
+	s.AddRouter(-1, &PingRouter{})
 	s.AddRouter(2, &HelloZinxRouter{})
 
 	//开启服务
