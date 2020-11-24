@@ -17,8 +17,12 @@ type IClient interface {
 	GetConnection() IConnection
 	//获取组件管理器
 	GetComponentMgr() ziface.IComponentManager
+	//消息处理
+	GetMsgHandler() ziface.IMsgHandle
 	//获取加密
 	GetEncryption() ziface.IEncryption
 	//路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
 	AddRouter(msgId int32, router ziface.IRouter)
+
+
 }

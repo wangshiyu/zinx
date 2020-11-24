@@ -18,7 +18,7 @@ func (c *Heartbeat) Run() {
 
 func (c *Heartbeat) Init() {
 	//一秒运行一次
-	c.Crons = []string{"* * * * * *"}
+	c.Crons = []string{"0/5 * * * * *"}
 }
 
 func (c *Heartbeat) GetCrons() []string {

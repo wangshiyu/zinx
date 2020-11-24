@@ -32,13 +32,14 @@ type Client struct {
 
 func (c *Client) Start() {
 	address := fmt.Sprintf("%s:%d", c.IP, c.Port)
+	c.MsgHandler.StartWorkerPool()
 	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		fmt.Println("resolve tcp addr err: ", err)
 		return
 	}
 	fmt.Println("create tcp addr: ", address)
-	c.Connection = NewConntion(c, conn, znet.NewMsgHandle())
+	c.Connection = NewConntion(c, conn)
 	go c.ComponentManager.Runs()
 	go c.Connection.Start()
 	select {}
@@ -56,6 +57,10 @@ func (c *Client) GetConnection() client.IConnection {
 //获取组件管理器
 func (c *Client) GetComponentMgr() ziface.IComponentManager {
 	return c.ComponentManager
+}
+
+func (c *Client) GetMsgHandler() ziface.IMsgHandle {
+	return c.MsgHandler
 }
 
 //获取加密

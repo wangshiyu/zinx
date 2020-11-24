@@ -13,14 +13,14 @@ func (c *Heartbeat) Run() {
 	connectionMap := c.TcpServer.GetConnMgr().Gets()
 	if len(connectionMap) > 0 {
 		for _, value := range connectionMap {
-			value.SendBuffMsg(-1, []byte("ping"))
+			value.SendMsg(-1, []byte("ping"))
 		}
 	}
 }
 
 func (c *Heartbeat) Init() {
 	//一秒运行一次
-	c.Crons = []string{"* * * * * *"}
+	c.Crons = []string{"0/5 * * * * *"}
 }
 
 func (c *Heartbeat) GetCrons() []string {

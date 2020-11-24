@@ -96,7 +96,7 @@ func (s *Server) Start() {
 		//	}
 		//	time.Sleep(1000000000 * 10)
 		//}
-		select {}
+		//select {}
 	}()
 
 	//开启一个go去做服务端Linster业务

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/wangshiyu/zinx/utils"
-	"github.com/wangshiyu/zinx/ziface"
 	"github.com/wangshiyu/zinx/ziface/client"
 	"github.com/wangshiyu/zinx/zlog"
 	"github.com/wangshiyu/zinx/znet"
@@ -18,8 +17,8 @@ type Connection struct {
 	Client client.IClient
 	//当前连接的socket TCP套接字
 	Conn net.Conn
-	//消息管理MsgId和对应处理方法的消息管理模块
-	MsgHandler ziface.IMsgHandle
+	////消息管理MsgId和对应处理方法的消息管理模块
+	//MsgHandler ziface.IMsgHandle
 	//告知该链接已经退出/停止的channel
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -36,13 +35,12 @@ type Connection struct {
 }
 
 //创建连接的方法
-func NewConntion(Client client.IClient, conn net.Conn, msgHandler ziface.IMsgHandle) *Connection {
+func NewConntion(Client client.IClient, conn net.Conn) *Connection {
 	//初始化Conn属性
 	c := &Connection{
 		Client:      Client,
 		Conn:        conn,
 		isClosed:    false,
-		MsgHandler:  msgHandler,
 		msgChan:     make(chan []byte),
 		msgBuffChan: make(chan []byte, utils.GlobalObject.MaxMsgChanLen),
 		property:    make(map[string]interface{}),
@@ -56,7 +54,6 @@ func NewConntion(Client client.IClient, conn net.Conn, msgHandler ziface.IMsgHan
 func (c *Connection) StartWriter() {
 	fmt.Println("[Writer Goroutine is running]")
 	defer fmt.Println(c.RemoteAddr().String(), "[conn Writer exit!]")
-
 	for {
 		select {
 		case data := <-c.msgChan:
@@ -136,6 +133,7 @@ func (c *Connection) StartReader() {
 			if utils.GlobalObject.Encryption {
 				data = c.Client.GetEncryption().Decrypt(data)
 			}
+			fmt.Println("client read data = ",string(data))
 			msg.SetData(data)
 
 			//得到当前客户端请求的Request数据
@@ -146,10 +144,10 @@ func (c *Connection) StartReader() {
 
 			if utils.GlobalObject.WorkerPoolSize > 0 {
 				//已经启动工作池机制，将消息交给Worker处理
-				c.MsgHandler.SendMsgToTaskQueue(&req)
+				c.Client.GetMsgHandler().SendMsgToTaskQueue(&req)
 			} else {
 				//从绑定好的消息和对应的处理方法中执行对应的Handle方法
-				go c.MsgHandler.DoMsgHandler(&req)
+				go c.Client.GetMsgHandler().DoMsgHandler(&req)
 			}
 		}
 	}
@@ -163,7 +161,8 @@ func (c *Connection) Start() {
 	//2 开启用于写回客户端数据流程的Goroutine
 	go c.StartWriter()
 	//按照用户传递进来的创建连接时需要处理的业务，执行钩子方法
-	//c.TcpServer.CallOnConnStart(c)
+	//c.CallOnConnStart(c)
+	select {}
 }
 
 //停止连接，结束当前连接状态M

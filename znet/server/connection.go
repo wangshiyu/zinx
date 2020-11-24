@@ -148,6 +148,7 @@ func (c *Connection) StartReader() {
 				data = c.TcpServer.GetEncryption().Decrypt(data)
 			}
 			msg.SetData(data)
+			fmt.Println("server read data = ",string(data))
 
 			//得到当前客户端请求的Request数据
 			req := Request{
@@ -228,6 +229,8 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 		return errors.New("connection closed when send msg")
 	}
 	c.RUnlock()
+	zlog.Debug("Server SendBuffMsg data = ", string(data))
+	fmt.Println("Server SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
