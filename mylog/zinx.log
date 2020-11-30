@@ -10772,3 +10772,99 @@
 2020/11/24 20:03:05 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
 2020/11/24 20:03:10 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
 2020/11/24 20:03:10 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:05:00 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/24 20:05:00 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/24 20:05:00 [DEBUG]connection.go:232: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/24 20:05:05 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:05:05 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:05:10 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:05:10 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:05:15 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:05:15 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:05:56 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/24 20:05:56 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/24 20:05:56 [DEBUG]connection.go:232: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/24 20:06:00 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:00 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:05 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:05 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:10 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:10 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:15 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:15 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:20 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:20 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:25 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:25 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:30 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:30 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:35 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:35 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:40 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:40 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:45 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:45 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:50 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:50 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:06:55 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:06:55 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:00 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:00 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:05 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:05 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:10 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:10 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:22 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/24 20:07:22 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/24 20:07:22 [DEBUG]connection.go:232: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/24 20:07:25 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:25 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:30 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:30 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:35 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:35 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:40 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:40 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:45 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:45 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/24 20:07:50 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/24 20:07:50 [DEBUG]connection.go:232: Server SendBuffMsg data =  ping
+2020/11/30 08:50:14 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/30 08:50:14 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/30 08:50:14 [DEBUG]connection.go:241: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/30 08:50:15 [DEBUG]connection.go:241: Server SendBuffMsg data =  ping
+2020/11/30 08:50:15 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 08:50:15 [ERROR]Server.go:70: Conn Property Name =  Aceld
+2020/11/30 08:50:15 [ERROR]Server.go:74: Conn Property Home =  https://www.jianshu.com/u/35261429b7f1
+2020/11/30 08:50:15 [DEBUG]Server.go:77: DoConneciotnLost is Called ... 
+2020/11/30 08:51:08 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/30 08:51:08 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/30 08:51:08 [DEBUG]connection.go:241: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/30 08:51:10 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 08:51:10 [DEBUG]connection.go:241: Server SendBuffMsg data =  ping
+2020/11/30 08:51:15 [DEBUG]connection.go:241: Server SendBuffMsg data =  ping
+2020/11/30 08:51:15 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 08:51:15 [ERROR]Server.go:70: Conn Property Name =  Aceld
+2020/11/30 08:51:15 [ERROR]Server.go:74: Conn Property Home =  https://www.jianshu.com/u/35261429b7f1
+2020/11/30 08:51:15 [DEBUG]Server.go:77: DoConneciotnLost is Called ... 
+2020/11/30 08:51:56 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/30 08:51:56 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/30 08:51:56 [DEBUG]connection.go:241: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/30 08:52:00 [DEBUG]connection.go:241: Server SendBuffMsg data =  ping
+2020/11/30 08:52:00 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 08:52:05 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 08:52:05 [DEBUG]connection.go:241: Server SendBuffMsg data =  ping
+2020/11/30 08:52:10 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 08:52:10 [DEBUG]connection.go:241: Server SendBuffMsg data =  ping
+2020/11/30 09:05:14 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/30 09:05:14 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/30 09:05:14 [DEBUG]connection.go:241: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/30 09:05:15 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 09:05:27 [DEBUG]Server.go:53: DoConnecionBegin is Called ... 
+2020/11/30 09:05:27 [DEBUG]Server.go:56: Set conn Name, Home done!
+2020/11/30 09:05:27 [DEBUG]connection.go:241: Server SendBuffMsg data =  DoConnection BEGIN...
+2020/11/30 09:05:30 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 09:05:35 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 09:05:40 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 09:05:45 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping
+2020/11/30 09:05:50 [DEBUG]connection.go:222: Client SendBuffMsg data =  ping

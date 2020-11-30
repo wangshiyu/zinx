@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/wangshiyu/zinx/ziface"
 	"github.com/wangshiyu/zinx/znet"
 	"github.com/wangshiyu/zinx/znet/client"
 )
-
 
 //ping test 自定义路由
 type PingRouter_ struct {
@@ -14,7 +14,7 @@ type PingRouter_ struct {
 
 //Ping Handle
 func (this *PingRouter_) Handle(request ziface.IRequest) {
-
+	fmt.Println(string(request.GetData()))
 	//zlog.Debug("Call PingRouter Handle")
 	////先读取客户端的数据，再回写ping...ping...ping
 	//zlog.Debug("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
@@ -22,6 +22,15 @@ func (this *PingRouter_) Handle(request ziface.IRequest) {
 	//if err != nil {
 	//	zlog.Error(err)
 	//}
+}
+
+type HelloZinxRouter_ struct {
+	znet.BaseRouter
+}
+
+//HelloZinxRouter Handle
+func (this *HelloZinxRouter_) Handle(request ziface.IRequest) {
+	fmt.Println(string(request.GetData()))
 }
 
 /*
@@ -32,6 +41,7 @@ func main() {
 
 	//配置路由
 	client.AddRouter(-1, &PingRouter_{})
+	client.AddRouter(2, &HelloZinxRouter_{})
 	//配置路由
 	client.Start()
 }

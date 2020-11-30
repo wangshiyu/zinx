@@ -13,6 +13,7 @@ import (
 	"net"
 	"strings"
 	"sync"
+	"time"
 )
 
 type Connection struct {
@@ -148,8 +149,16 @@ func (c *Connection) StartReader() {
 				data = c.TcpServer.GetEncryption().Decrypt(data)
 			}
 			msg.SetData(data)
-			fmt.Println("server read data = ",string(data))
-
+			fmt.Println("server read data = ", string(data))
+			//更新消息接收时间
+			c.SetProperty(znet.LAST_MSG_READ_DATE, time.Now())
+			c.SetProperty(znet.LAST_MSG_READ_LEN, len(data))
+			len_, _ := c.GetProperty(znet.READ_MSG_LEN)
+			if len_ == nil {
+				len_ = int64(0)
+			}
+			len_ = int64(len_.(int64)) + int64(len(data))
+			c.SetProperty(znet.READ_MSG_LEN, len_)
 			//得到当前客户端请求的Request数据
 			req := Request{
 				conn: c,
@@ -301,13 +310,11 @@ func (c *Connection) RemoveProperty(key string) {
 }
 
 //是否授权
-func (c *Connection) IsAuth() bool{
+func (c *Connection) IsAuth() bool {
 	return false
 }
 
 //是否关闭
-func (c *Connection) IsClosed() bool{
+func (c *Connection) IsClosed() bool {
 	return c.isClosed
 }
-
-

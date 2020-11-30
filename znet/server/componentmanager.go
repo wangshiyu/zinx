@@ -30,6 +30,9 @@ func NewComponentManager(TcpServer server.IServer) *ComponentManager {
 	Heartbeat := server2.NewHeartbeat(TcpServer)
 	Heartbeat.Init()
 	ComponentManager.Add("Heartbeat", Heartbeat)
+	CheckHeartbeat := server2.NewCheckHeartbeat(TcpServer)
+	CheckHeartbeat.Init()
+	ComponentManager.Add("CheckHeartbeat", CheckHeartbeat)
 	return ComponentManager
 }
 
