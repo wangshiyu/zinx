@@ -5,8 +5,9 @@ import (
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface"
 	"github.com/wangshiyu/zinx/ziface/client"
+	"github.com/wangshiyu/zinx/zlog"
 	"github.com/wangshiyu/zinx/znet"
-	"net"
+	"sync"
 )
 
 type Client struct {
@@ -28,29 +29,38 @@ type Client struct {
 	Encryption ziface.IEncryption
 	//当前Server的消息管理模块，用来绑定MsgId和对应的处理方法
 	MsgHandler ziface.IMsgHandle
+
+	connLock sync.RWMutex //读写连接的读写锁
 }
 
 func (c *Client) Start() {
-	address := fmt.Sprintf("%s:%d", c.IP, c.Port)
 	c.MsgHandler.StartWorkerPool()
-	conn, err := net.Dial("tcp", address)
-	if err != nil {
-		fmt.Println("resolve tcp addr err: ", err)
-		return
-	}
-	fmt.Println("create tcp addr: ", address)
-	c.Connection = NewConntion(c, conn)
 	go c.ComponentManager.Runs()
-	go c.Connection.Start()
+	c.Link()
 	select {}
 }
 
+func (c *Client) Link() {
+	c.Connection = NewConnection(c)
+}
+
 func (c *Client) Stop() {
-	fmt.Println("[STOP] Zinx clinet , name ", c.Name)
+	//fmt.Println("[STOP] Zinx clinet , name ", c.Name)
+	zlog.Info("[STOP] Zinx clinet , name ", c.Name)
 	c.Connection.Stop()
 }
 
+func (c *Client) SetConnection(Connection client.IConnection) {
+	//保护共享资源Map 加写锁
+	c.connLock.Lock()
+	defer c.connLock.Unlock()
+	c.Connection = Connection
+}
+
 func (c *Client) GetConnection() client.IConnection {
+	//保护共享资源Map 加写锁
+	c.connLock.Lock()
+	defer c.connLock.Unlock()
 	return c.Connection
 }
 
@@ -79,8 +89,15 @@ func (c *Client) SetOnConnStop(hookFunc func(client.IConnection)) {
 }
 
 //路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
-func (c *Client) AddRouter(msgId int32, router ziface.IRouter) {
+func (c *Client) AddRouter(msgId int32, router ziface.IRouter){
+	if msgId < 0 {
+		panic("msgId < 0")
+	}
 	c.MsgHandler.AddRouter(msgId, router)
+}
+
+func (c *Client) GetAddress() string {
+	return fmt.Sprintf("%s:%d", c.IP, c.Port)
 }
 
 func NewClient(Name string) *Client {

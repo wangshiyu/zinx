@@ -5,7 +5,10 @@ package zlog
    全局日志对象 StdZinxLog
 */
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 var StdZinxLog = NewZinxLog(os.Stderr, "", BitDefault)
 
@@ -46,37 +49,45 @@ func OpenDebug() {
 
 // ====> Debug <====
 func Debugf(format string, v ...interface{}) {
+	fmt.Println(fmt.Sprintf(format, v...))
 	StdZinxLog.Debugf(format, v...)
 }
 
 func Debug(v ...interface{}) {
+	fmt.Println(v)
 	StdZinxLog.Debug(v...)
 }
 
 // ====> Info <====
 func Infof(format string, v ...interface{}) {
+	fmt.Println(fmt.Sprintf(format, v...))
 	StdZinxLog.Infof(format, v...)
 }
 
 func Info(v ...interface{}) {
+	fmt.Println(v)
 	StdZinxLog.Info(v...)
 }
 
 // ====> Warn <====
 func Warnf(format string, v ...interface{}) {
+	fmt.Println(fmt.Sprintf(format, v...))
 	StdZinxLog.Warnf(format, v...)
 }
 
 func Warn(v ...interface{}) {
+	fmt.Println(v...)
 	StdZinxLog.Warn(v...)
 }
 
 // ====> Error <====
 func Errorf(format string, v ...interface{}) {
+	fmt.Println(fmt.Sprintf(format, v...))
 	StdZinxLog.Errorf(format, v...)
 }
 
 func Error(v ...interface{}) {
+	fmt.Println(v...)
 	StdZinxLog.Error(v...)
 }
 

@@ -5,6 +5,7 @@ import (
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface"
 	server "github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/zlog"
 	"github.com/wangshiyu/zinx/znet"
 	"net"
 )
@@ -71,33 +72,6 @@ func (s *Server) Start() {
 	fmt.Printf("[START] Server name: %s,listenner at IP: %s, Port %d is starting\n", s.Name, s.IP, s.Port)
 
 	go s.ComponentManager.Runs()
-	//todo 守护线程
-	go func() {
-
-		//crontab := cron.New()
-		//if len(s.Components) > 0 {
-		//	for Comp := range s.Components {
-		//		task := func() {
-		//			Comp
-		//		}
-		//		crontab.AddFunc("* * * * * ?", task)
-		//		crontab.Start()
-		//	}
-		//}
-		//
-		//for {
-		//	if s.ConnMgr.Len() != 0 {
-		//		connectionMap := s.ConnMgr.Gets()
-		//		for _, value := range connectionMap {
-		//			if value.IsClosed() {
-		//				value.Stop()
-		//			}
-		//		}
-		//	}
-		//	time.Sleep(1000000000 * 10)
-		//}
-		//select {}
-	}()
 
 	//开启一个go去做服务端Linster业务
 	go func() {
@@ -107,19 +81,22 @@ func (s *Server) Start() {
 		//1 获取一个TCP的Addr
 		addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IP, s.Port))
 		if err != nil {
-			fmt.Println("resolve tcp addr err: ", err)
+			//fmt.Println("resolve tcp addr err: ", err)
+			zlog.Error("resolve tcp addr err: ", err)
 			return
 		}
 
 		//2 监听服务器地址
 		listener, err := net.ListenTCP(s.IPVersion, addr)
 		if err != nil {
-			fmt.Println("listen", s.IPVersion, "err", err)
+			//fmt.Println("listen", s.IPVersion, "err", err)
+			zlog.Error("listen", s.IPVersion, "err", err)
 			return
 		}
 
 		//已经监听成功
-		fmt.Println("start Zinx server  ", s.Name, " succ, now listenning...")
+		//fmt.Println("start Zinx server  ", s.Name, " succ, now listenning...")
+		zlog.Info("start Zinx server  ", s.Name, " succ, now listenning...")
 
 		//TODO server.go 应该有一个自动生成ID的方法
 		var cid uint32
@@ -130,10 +107,12 @@ func (s *Server) Start() {
 			//3.1 阻塞等待客户端建立连接请求
 			conn, err := listener.AcceptTCP()
 			if err != nil {
-				fmt.Println("Accept err ", err)
+				//fmt.Println("Accept err ", err)
+				zlog.Error("Accept err ", err)
 				continue
 			}
-			fmt.Println("Get conn remote addr = ", conn.RemoteAddr().String())
+			//fmt.Println("Get conn remote addr = ", conn.RemoteAddr().String())
+			zlog.Info("Get conn remote addr = ", conn.RemoteAddr().String())
 
 			//3.2 设置服务器最大连接控制,如果超过最大连接，那么则关闭此新的连接
 			if s.ConnMgr.Len() >= utils.GlobalObject.MaxConn {
@@ -153,8 +132,8 @@ func (s *Server) Start() {
 
 //停止服务
 func (s *Server) Stop() {
-	fmt.Println("[STOP] Zinx server , name ", s.Name)
-
+	//fmt.Println("[STOP] Zinx server , name ", s.Name)
+	zlog.Info("[STOP] Zinx server , name ", s.Name)
 	//将其他需要清理的连接信息或者其他信息 也要一并停止或者清理
 	s.ConnMgr.ClearConn()
 }
@@ -163,14 +142,15 @@ func (s *Server) Stop() {
 func (s *Server) Serve() {
 	s.Start()
 
-	//TODO Server.Serve() 是否在启动服务的时候 还要处理其他的事情呢 可以在这里添加
-
 	//阻塞,否则主Go退出， listenner的go将会退出
 	select {}
 }
 
 //路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
-func (s *Server) AddRouter(msgId int32, router ziface.IRouter) {
+func (s *Server) AddRouter(msgId int32, router ziface.IRouter){
+	if msgId < 0 {
+		panic("msgId < 0")
+	}
 	s.msgHandler.AddRouter(msgId, router)
 }
 
@@ -192,7 +172,8 @@ func (s *Server) SetOnConnStop(hookFunc func(server.IConnection)) {
 //调用连接OnConnStart Hook函数
 func (s *Server) CallOnConnStart(conn server.IConnection) {
 	if s.OnConnStart != nil {
-		fmt.Println("---> CallOnConnStart....")
+		//fmt.Println("---> CallOnConnStart....")
+		zlog.Info("---> CallOnConnStart.....")
 		s.OnConnStart(conn)
 	}
 }
@@ -200,7 +181,8 @@ func (s *Server) CallOnConnStart(conn server.IConnection) {
 //调用连接OnConnStop Hook函数
 func (s *Server) CallOnConnStop(conn server.IConnection) {
 	if s.OnConnStop != nil {
-		fmt.Println("---> CallOnConnStop....")
+		//fmt.Println("---> CallOnConnStop....")
+		zlog.Info("---> CallOnConnStop....")
 		s.OnConnStop(conn)
 	}
 }
@@ -210,7 +192,7 @@ func (s *Server) GetComponentMgr() ziface.IComponentManager {
 	return s.ComponentManager
 }
 
-func (s *Server) GetEncryption () ziface.IEncryption{
+func (s *Server) GetEncryption() ziface.IEncryption {
 	return s.Encryption
 }
 

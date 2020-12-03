@@ -1,9 +1,9 @@
 package znet
 
 import (
-	"fmt"
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface"
+	"github.com/wangshiyu/zinx/zlog"
 	"math/rand"
 	"strconv"
 )
@@ -39,9 +39,15 @@ func (mh *MsgHandle) SendMsgToTaskQueue(request ziface.IRequest) {
 
 //马上以非阻塞方式处理消息
 func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
+	if request.GetMsgID()<0 {
+		zlog.Debug("api msgId = ", request.GetMsgID())
+		return
+	}
+
 	handler, ok := mh.Apis[request.GetMsgID()]
 	if !ok {
-		fmt.Println("api msgId = ", request.GetMsgID(), " is not FOUND!")
+		zlog.Debug("api msgId = ", request.GetMsgID(), " is not FOUND!")
+		//fmt.Println("api msgId = ", request.GetMsgID(), " is not FOUND!")
 		return
 	}
 
@@ -59,12 +65,14 @@ func (mh *MsgHandle) AddRouter(msgId int32, router ziface.IRouter) {
 	}
 	//2 添加msg与api的绑定关系
 	mh.Apis[msgId] = router
-	fmt.Println("Add api msgId = ", msgId)
+	//fmt.Println("Add api msgId = ", msgId)
+	zlog.Info("Add api msgId = ", msgId)
 }
 
 //启动一个Worker工作流程
 func (mh *MsgHandle) StartOneWorker(workerID int, taskQueue chan ziface.IRequest) {
-	fmt.Println("Worker ID = ", workerID, " is started.")
+	//fmt.Println("Worker ID = ", workerID, " is started.")
+	zlog.Info("Worker ID = ", workerID, " is started.")
 	//不断的等待队列中的消息
 	for {
 		select {

@@ -28,10 +28,8 @@ func NewComponentManager(TcpServer server.IServer) *ComponentManager {
 		TcpServer:    TcpServer,
 	}
 	Heartbeat := server2.NewHeartbeat(TcpServer)
-	Heartbeat.Init()
 	ComponentManager.Add("Heartbeat", Heartbeat)
 	CheckHeartbeat := server2.NewCheckHeartbeat(TcpServer)
-	CheckHeartbeat.Init()
 	ComponentManager.Add("CheckHeartbeat", CheckHeartbeat)
 	return ComponentManager
 }
@@ -42,16 +40,12 @@ func (componentMgr *ComponentManager) Runs() {
 		crontab := cron.New()
 		for _, Comp := range maps {
 			Comp.Init()
-			task := func() {
-				Comp.Run()
-			}
 			for _, Cron := range Comp.GetCrons() {
-				crontab.AddFunc(Cron, task)
+				crontab.AddJob(Cron, Comp)
 			}
 		}
 		crontab.Start()
 	}
-	select {}
 }
 
 //添加组件

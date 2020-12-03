@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/zlog"
 	"sync"
 )
 
@@ -44,8 +45,8 @@ func (connMgr *ConnManager) Remove(conn server.IConnection) {
 
 	//删除连接信息
 	delete(connMgr.connections, conn.GetConnID())
-
-	fmt.Println("connection Remove ConnID=", conn.GetConnID(), " successfully: conn num = ", connMgr.Len())
+	//fmt.Println("connection Remove ConnID=", conn.GetConnID(), " successfully: conn num = ", connMgr.Len())
+	zlog.Info("connection Remove ConnID=", conn.GetConnID(), " successfully: conn num = ", connMgr.Len())
 }
 
 //利用ConnID获取链接
@@ -63,6 +64,8 @@ func (connMgr *ConnManager) Get(connID uint32) (server.IConnection, error) {
 
 //获取全部链接
 func (connMgr *ConnManager) Gets() map[uint32]server.IConnection {
+	connMgr.connLock.RLock()
+	defer connMgr.connLock.RUnlock()
 	return connMgr.connections
 }
 

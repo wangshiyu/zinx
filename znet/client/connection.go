@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface/client"
 	"github.com/wangshiyu/zinx/zlog"
@@ -11,14 +10,14 @@ import (
 	"io"
 	"net"
 	"strings"
+	"time"
 )
 
 type Connection struct {
 	Client client.IClient
 	//当前连接的socket TCP套接字
 	Conn net.Conn
-	////消息管理MsgId和对应处理方法的消息管理模块
-	//MsgHandler ziface.IMsgHandle
+
 	//告知该链接已经退出/停止的channel
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -35,7 +34,16 @@ type Connection struct {
 }
 
 //创建连接的方法
-func NewConntion(Client client.IClient, conn net.Conn) *Connection {
+func NewConnection(Client client.IClient) *Connection {
+	address := Client.GetAddress()
+	conn, err := net.Dial("tcp", address)
+	if err != nil {
+		//fmt.Println("resolve tcp addr err: ", err)
+		zlog.Error("resolve tcp addr err: ", err)
+		return nil
+	}
+	zlog.Info("create tcp addr: ", address)
+	//fmt.Println("create tcp addr: ", address)
 	//初始化Conn属性
 	c := &Connection{
 		Client:      Client,
@@ -45,6 +53,7 @@ func NewConntion(Client client.IClient, conn net.Conn) *Connection {
 		msgBuffChan: make(chan []byte, utils.GlobalObject.MaxMsgChanLen),
 		property:    make(map[string]interface{}),
 	}
+	go c.Start()
 	return c
 }
 
@@ -52,14 +61,17 @@ func NewConntion(Client client.IClient, conn net.Conn) *Connection {
 	写消息Goroutine， 用户将数据发送给客户端
 */
 func (c *Connection) StartWriter() {
-	fmt.Println("[Writer Goroutine is running]")
-	defer fmt.Println(c.RemoteAddr().String(), "[conn Writer exit!]")
+	//fmt.Println("[Writer Goroutine is running]")
+	zlog.Info("[Writer Goroutine is running]")
+	//defer fmt.Println(c.RemoteAddr().String(), "[conn Writer exit!]")
+	defer zlog.Info(c.RemoteAddr().String(), "[conn Writer exit!]")
 	for {
 		select {
 		case data := <-c.msgChan:
 			//有数据要写给客户端
 			if _, err := c.Conn.Write(data); err != nil {
-				fmt.Println("Send Data error:, ", err, " Conn Writer exit")
+				zlog.Error("Send Data error:, ", err, " Conn Writer exit")
+				//fmt.Println("Send Data error:, ", err, " Conn Writer exit")
 				return
 			}
 			//fmt.Printf("Send data succ! data = %+v\n", data)
@@ -67,11 +79,13 @@ func (c *Connection) StartWriter() {
 			if ok {
 				//有数据要写给客户端
 				if _, err := c.Conn.Write(data); err != nil {
-					fmt.Println("Send Buff Data error:, ", err, " Conn Writer exit")
+					//fmt.Println("Send Buff Data error:, ", err, " Conn Writer exit")
+					zlog.Error("Send Buff Data error:, ", err, " Conn Writer exit")
 					return
 				}
 			} else {
-				fmt.Println("msgBuffChan is Closed")
+				//fmt.Println("msgBuffChan is Closed")
+				zlog.Error("msgBuffChan is Closed")
 				break
 			}
 		case <-c.ctx.Done():
@@ -84,8 +98,10 @@ func (c *Connection) StartWriter() {
 	读消息Goroutine，用于从客户端中读取数据
 */
 func (c *Connection) StartReader() {
-	fmt.Println("[Reader Goroutine is running]")
-	defer fmt.Println(c.RemoteAddr().String(), "[conn Reader exit!]")
+	//fmt.Println("[Reader Goroutine is running]")
+	//defer fmt.Println(c.RemoteAddr().String(), "[conn Reader exit!]")
+	zlog.Info("[Reader Goroutine is running]")
+	defer zlog.Info(c.RemoteAddr().String(), "[conn Reader exit!]")
 	defer c.Stop()
 	for {
 		select {
@@ -100,15 +116,16 @@ func (c *Connection) StartReader() {
 			if _, err := io.ReadFull(c.Conn, headData); err != nil {
 				switch {
 				case strings.Contains(err.Error(), "connection reset"):
-					fmt.Println("Connection refused")
-					c.Stop()
+					//fmt.Println("Connection refused")
+					zlog.Error("Connection refused")
 					return
 				case strings.Contains(err.Error(), "EOF"):
-					fmt.Println("EOF")
-					c.Conn.Close()
+					//fmt.Println("EOF")
+					zlog.Error("EOF")
 					return
 				default:
-					fmt.Printf("read msg head error Unknown error:%s", err)
+					//fmt.Printf("read msg head error Unknown error:%s", err)
+					zlog.Errorf("read msg head error Unknown error:%s", err)
 				}
 				break
 			}
@@ -117,7 +134,8 @@ func (c *Connection) StartReader() {
 			//拆包，得到msgid 和 datalen 放在msg中
 			msg, err := dp.Unpack(headData)
 			if err != nil {
-				fmt.Println("unpack error ", err)
+				//fmt.Println("unpack error ", err)
+				zlog.Error("unpack error ", err)
 				break
 			}
 
@@ -126,16 +144,28 @@ func (c *Connection) StartReader() {
 			if msg.GetDataLen() > 0 {
 				data = make([]byte, msg.GetDataLen())
 				if _, err := io.ReadFull(c.Conn, data); err != nil {
-					fmt.Println("read msg data error ", err)
+					//fmt.Println("read msg data error ", err)
+					zlog.Error("read msg data error ", err)
 					break
 				}
 			}
 			if utils.GlobalObject.Encryption {
 				data = c.Client.GetEncryption().Decrypt(data)
 			}
-			fmt.Println("client read data = ",string(data))
-			msg.SetData(data)
+			//fmt.Println("client read data = ", string(data))
+			zlog.Debug("client read data = ", string(data))
 
+			//更新消息接收时间
+			c.SetProperty(znet.LAST_MSG_READ_DATE, time.Now())
+			c.SetProperty(znet.LAST_MSG_READ_LEN, len(data))
+			len_, _ := c.GetProperty(znet.READ_MSG_LEN)
+			if len_ == nil {
+				len_ = int64(0)
+			}
+			len_ = len_.(int64) + int64(len(data))
+			c.SetProperty(znet.READ_MSG_LEN, len_)
+
+			msg.SetData(data)
 			//得到当前客户端请求的Request数据
 			req := Request{
 				conn: c,
@@ -179,6 +209,8 @@ func (c *Connection) Stop() {
 	c.Conn.Close()
 	//关闭Writer
 	c.cancel()
+	//清楚连接
+	c.Client.SetConnection(nil)
 
 	//关闭该链接全部管道
 	close(c.msgBuffChan)
@@ -206,7 +238,8 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
-		fmt.Println("Pack error msg id = ", msgId)
+		//fmt.Println("Pack error msg id = ", msgId)
+		zlog.Error("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")
 	}
 	//写回客户端
@@ -220,7 +253,7 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 		return errors.New("Connection closed when send buff msg")
 	}
 	zlog.Debug("Client SendBuffMsg data = ", string(data))
-	fmt.Println("Client SendBuffMsg data = ", string(data))
+	//fmt.Println("Client SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
@@ -228,7 +261,8 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
-		fmt.Println("Pack error msg id = ", msgId)
+		//fmt.Println("Pack error msg id = ", msgId)
+		zlog.Error("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")
 	}
 	//写回客户端

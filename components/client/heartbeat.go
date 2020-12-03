@@ -1,6 +1,8 @@
 package client
 
 import (
+	"fmt"
+	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface/client"
 )
 
@@ -11,8 +13,11 @@ type Heartbeat struct {
 
 func (c *Heartbeat) Run() {
 	Connection := c.Client.GetConnection()
-	if Connection != nil {
-		Connection.SendBuffMsg(-1, []byte("ping"))
+	if utils.IsNotNil(Connection) {
+		err := Connection.SendBuffMsg(-1, []byte("ping"))
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
