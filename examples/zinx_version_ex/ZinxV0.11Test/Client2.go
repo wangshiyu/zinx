@@ -40,7 +40,6 @@ func main() {
 	client := client.NewClient("test")
 
 	//配置路由
-	//client.AddRouter(-1, &PingRouter_{})
 	client.AddRouter(2, &HelloZinxRouter_{})
 	//配置路由
 	client.Start()

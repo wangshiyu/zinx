@@ -65,8 +65,6 @@ func NewConntion(server server.IServer, conn *net.TCPConn, connID uint32, msgHan
 	写消息Goroutine， 用户将数据发送给客户端
 */
 func (c *Connection) StartWriter() {
-	//fmt.Println("[Writer Goroutine is running]")
-	//defer fmt.Println(c.RemoteAddr().String(), "[conn Writer exit!]")
 	zlog.Info("[Writer Goroutine is running]")
 	defer zlog.Info(c.RemoteAddr().String(), "[conn Writer exit!]")
 
@@ -75,21 +73,18 @@ func (c *Connection) StartWriter() {
 		case data := <-c.msgChan:
 			//有数据要写给客户端
 			if _, err := c.Conn.Write(data); err != nil {
-				//fmt.Println("Send Data error:, ", err, " Conn Writer exit")
 				zlog.Error("Send Data error:, ", err, " Conn Writer exit")
 				return
 			}
-			//fmt.Printf("Send data succ! data = %+v\n", data)
+			zlog.Debugf("Send data succ! data = %+v\n", data)
 		case data, ok := <-c.msgBuffChan:
 			if ok {
 				//有数据要写给客户端
 				if _, err := c.Conn.Write(data); err != nil {
-					//fmt.Println("Send Buff Data error:, ", err, " Conn Writer exit")
 					zlog.Error("Send Buff Data error:, ", err, " Conn Writer exit")
 					return
 				}
 			} else {
-				//fmt.Println("msgBuffChan is Closed")
 				zlog.Error("msgBuffChan is Closed")
 				break
 			}
@@ -103,8 +98,6 @@ func (c *Connection) StartWriter() {
 	读消息Goroutine，用于从客户端中读取数据
 */
 func (c *Connection) StartReader() {
-	//fmt.Println("[Reader Goroutine is running]")
-	//defer fmt.Println(c.RemoteAddr().String(), "[conn Reader exit!]")
 	zlog.Info("[Reader Goroutine is running]")
 	defer zlog.Info(c.RemoteAddr().String(), "[conn Reader exit!]")
 	defer c.Stop()
@@ -121,20 +114,17 @@ func (c *Connection) StartReader() {
 			if _, err := io.ReadFull(c.Conn, headData); err != nil {
 				switch {
 				case strings.Contains(err.Error(), "connection reset"):
-					//fmt.Println("Connection refused")
 					zlog.Error("Connection refused")
 					return
 				case strings.Contains(err.Error(), "EOF"):
-					//fmt.Println("EOF")
 					zlog.Error("EOF")
 					return
 				default:
-					//fmt.Printf("read msg head error Unknown error:%s", err)
 					zlog.Errorf("read msg head error Unknown error:%s", err)
 				}
 				break
 			}
-			//fmt.Printf("read headData %+v\n", headData)
+			zlog.Debugf("read headData %+v\n", headData)
 
 			//拆包，得到msgid 和 datalen 放在msg中
 			msg, err := dp.Unpack(headData)
@@ -149,7 +139,6 @@ func (c *Connection) StartReader() {
 			if msg.GetDataLen() > 0 {
 				data = make([]byte, msg.GetDataLen())
 				if _, err := io.ReadFull(c.Conn, data); err != nil {
-					//fmt.Println("read msg data error ", err)
 					zlog.Error("read msg data error ", err)
 					break
 				}
@@ -158,7 +147,6 @@ func (c *Connection) StartReader() {
 				data = c.TcpServer.GetEncryption().Decrypt(data)
 			}
 			msg.SetData(data)
-			//fmt.Println("server read data = ", string(data))
 			zlog.Debug("server read data = ", string(data))
 			//更新消息接收时间
 			c.SetProperty(znet.LAST_MSG_READ_DATE, time.Now())
@@ -249,7 +237,6 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 	}
 	c.RUnlock()
 	zlog.Debug("Server SendBuffMsg data = ", string(data))
-	//fmt.Println("Server SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
@@ -257,7 +244,6 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
-		//fmt.Println("Pack error msg id = ", msgId)
 		zlog.Error("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")
 	}
@@ -275,7 +261,6 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 	}
 	c.RUnlock()
 	zlog.Debug("Server SendBuffMsg data = ", string(data))
-	//fmt.Println("Server SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
 	if utils.GlobalObject.Encryption {
@@ -283,7 +268,6 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
-		//fmt.Println("Pack error msg id = ", msgId)
 		zlog.Error("Pack error msg id = ", msgId)
 		return errors.New("Pack error msg ")
 	}
