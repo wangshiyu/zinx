@@ -20,6 +20,7 @@ func main() {
 		log.Println("cron running:", i)
 		fmt.Println("cron running:", i)
 	})
+	//c.AddJob()
 	c.Start()
 	select {}
 }

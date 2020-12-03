@@ -7,7 +7,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/wangshiyu/zinx/ziface"
 	ziface2 "github.com/wangshiyu/zinx/ziface/server"
 	"github.com/wangshiyu/zinx/zlog"
@@ -15,22 +14,6 @@ import (
 	"github.com/wangshiyu/zinx/znet/server"
 )
 
-//ping test 自定义路由
-type  PingRouter struct {
-	znet.BaseRouter
-}
-
-//Ping Handle
-func (this *PingRouter) Handle(request ziface.IRequest) {
-	fmt.Println(string(request.GetData()))
-	//zlog.Debug("Call PingRouter Handle")
-	////先读取客户端的数据，再回写ping...ping...ping
-	//zlog.Debug("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
-	//err := request.GetConnection().(ziface2.IConnection).SendBuffMsg(0, []byte("ping...ping...ping"))
-	//if err != nil {
-	//	zlog.Error(err)
-	//}
-}
 
 type HelloZinxRouter struct {
 	znet.BaseRouter
@@ -86,7 +69,6 @@ func main() {
 	s.SetOnConnStop(DoConnectionLost)
 
 	//配置路由
-	//s.AddRouter(1, &PingRouter{})
 	s.AddRouter(2, &HelloZinxRouter{})
 
 	//开启服务
