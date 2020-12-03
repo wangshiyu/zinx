@@ -3,7 +3,7 @@ package client
 import (
 	"errors"
 	"github.com/robfig/cron"
-	client2 "github.com/wangshiyu/zinx/components/client"
+	client2 "github.com/wangshiyu/zinx/zcomponents/client"
 	"github.com/wangshiyu/zinx/ziface"
 	"github.com/wangshiyu/zinx/ziface/client"
 )

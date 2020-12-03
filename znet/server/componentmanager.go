@@ -3,7 +3,7 @@ package server
 import (
 	"errors"
 	"github.com/robfig/cron"
-	server2 "github.com/wangshiyu/zinx/components/server"
+	server2 "github.com/wangshiyu/zinx/zcomponents/server"
 	"github.com/wangshiyu/zinx/ziface"
 	"github.com/wangshiyu/zinx/ziface/server"
 )
