@@ -23,7 +23,6 @@ type HelloZinxRouter struct {
 func (this *HelloZinxRouter) Handle(request ziface.IRequest) {
 	zlog.Debug("Call HelloZinxRouter Handle")
 	//先读取客户端的数据，再回写ping...ping...ping
-	//fmt.Println("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
 	zlog.Debug("recv from client : msgId=", request.GetMsgID(), ", data=", string(request.GetData()))
 	err := request.GetConnection().(ziface2.IConnection).SendBuffMsg(1, []byte("Hello Zinx Router V0.10"))
 	if err != nil {
