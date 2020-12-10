@@ -88,6 +88,23 @@ func (c *Client) SetOnConnStop(hookFunc func(client.IConnection)) {
 	c.OnConnStop = hookFunc
 }
 
+//调用连接OnConnStart Hook函数
+func (s *Client) CallOnConnStart(Connection client.IConnection) {
+	if s.OnConnStart != nil {
+		zlog.Info("---> CallOnConnStart.....")
+		s.OnConnStart(Connection)
+	}
+}
+
+//调用连接OnConnStop Hook函数
+func (s *Client) CallOnConnStop(Connection client.IConnection) {
+	if s.OnConnStop != nil {
+		zlog.Info("---> CallOnConnStop....")
+		s.OnConnStop(Connection)
+	}
+}
+
+
 //路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
 func (c *Client) AddRouter(msgId int32, router ziface.IRouter){
 	if msgId < 0 {

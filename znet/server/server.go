@@ -164,7 +164,6 @@ func (s *Server) SetOnConnStop(hookFunc func(server.IConnection)) {
 //调用连接OnConnStart Hook函数
 func (s *Server) CallOnConnStart(conn server.IConnection) {
 	if s.OnConnStart != nil {
-		//fmt.Println("---> CallOnConnStart....")
 		zlog.Info("---> CallOnConnStart.....")
 		s.OnConnStart(conn)
 	}
@@ -173,7 +172,6 @@ func (s *Server) CallOnConnStart(conn server.IConnection) {
 //调用连接OnConnStop Hook函数
 func (s *Server) CallOnConnStop(conn server.IConnection) {
 	if s.OnConnStop != nil {
-		//fmt.Println("---> CallOnConnStop....")
 		zlog.Info("---> CallOnConnStop....")
 		s.OnConnStop(conn)
 	}

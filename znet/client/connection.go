@@ -178,7 +178,7 @@ func (c *Connection) Start() {
 	//2 开启用于写回客户端数据流程的Goroutine
 	go c.StartWriter()
 	//按照用户传递进来的创建连接时需要处理的业务，执行钩子方法
-	//c.CallOnConnStart(c)
+	c.Client.CallOnConnStart(c)
 }
 
 //停止连接，结束当前连接状态M
@@ -190,7 +190,7 @@ func (c *Connection) Stop() {
 	c.isClosed = true
 
 	//如果用户注册了该链接的关闭回调业务，那么在此刻应该显示调用
-	//c.TcpServer.CallOnConnStop(c)
+	c.Client.CallOnConnStop(c)
 	// 关闭socket链接
 	c.Conn.Close()
 	//关闭Writer

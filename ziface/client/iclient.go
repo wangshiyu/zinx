@@ -17,6 +17,10 @@ type IClient interface {
 	SetOnConnStop(func(IConnection))
 	//设置连接
 	SetConnection(Connection IConnection)
+	//调用连接OnConnStart Hook函数
+	CallOnConnStart(Connection IConnection)
+	//调用连接OnConnStop Hook函数
+	CallOnConnStop(Connection IConnection)
 	//获取连接
 	GetConnection() IConnection
 	//获取组件管理器

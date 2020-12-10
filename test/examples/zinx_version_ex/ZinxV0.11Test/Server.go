@@ -37,8 +37,6 @@ func DoConnectionBegin(conn ziface2.IConnection) {
 	//设置两个链接属性，在连接创建之后
 	zlog.Debug("Set conn Name, Home done!")
 	conn.SetProperty("Name", "Aceld")
-	conn.SetProperty("Home", "https://www.jianshu.com/u/35261429b7f1")
-
 	err := conn.SendMsg(2, []byte("DoConnection BEGIN..."))
 	if err != nil {
 		zlog.Error(err)
