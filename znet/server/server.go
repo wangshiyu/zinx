@@ -96,8 +96,8 @@ func (s *Server) Start() {
 		zlog.Info("start Zinx server  ", s.Name, " succ, now listenning...")
 
 		//TODO server.go 应该有一个自动生成ID的方法
-		var cid uint32
-		cid = 0
+		//var cid uint32
+		//cid = 0
 		//3 启动server网络连接业务
 		for {
 			//3.1 阻塞等待客户端建立连接请求
@@ -110,13 +110,14 @@ func (s *Server) Start() {
 
 			//3.2 设置服务器最大连接控制,如果超过最大连接，那么则关闭此新的连接
 			if s.ConnMgr.Len() >= utils.GlobalObject.MaxConn {
+				zlog.Warn("ConnLen:" + string(s.ConnMgr.Len()) + " MaxConnLen:" + string(utils.GlobalObject.MaxConn))
 				conn.Close()
 				continue
 			}
 
 			//3.3 处理该新连接请求的 业务 方法， 此时应该有 handler 和 conn是绑定的
 			dealConn := NewConntion(s, conn, cid, s.msgHandler)
-			cid++
+			//cid++
 			//3.4 启动当前链接的处理业务
 			go dealConn.Start()
 		}
@@ -139,7 +140,7 @@ func (s *Server) Serve() {
 }
 
 //路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
-func (s *Server) AddRouter(msgId int32, router ziface.IRouter){
+func (s *Server) AddRouter(msgId int32, router ziface.IRouter) {
 	if msgId < 0 {
 		panic("msgId < 0")
 	}

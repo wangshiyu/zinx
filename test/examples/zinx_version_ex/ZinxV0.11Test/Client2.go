@@ -7,6 +7,7 @@ import (
 	"github.com/wangshiyu/zinx/zlog"
 	"github.com/wangshiyu/zinx/znet"
 	"github.com/wangshiyu/zinx/znet/client"
+	"time"
 )
 
 type HelloZinxRouter_ struct {
@@ -50,14 +51,22 @@ func ClientDoConnectionLost(conn ziface2.IConnection) {
 	模拟客户端
 */
 func main() {
-	client := client.NewClient("test")
 
-	//注册链接hook回调函数
-	client.SetOnConnStart(ClientDoConnectionBegin)
-	client.SetOnConnStop(ClientDoConnectionLost)
+	for n := 0; n <= 1000; n++{
+		go func (){
+			client := client.NewClient("test")
 
-	//配置路由
-	client.AddRouter(2, &HelloZinxRouter_{})
-	//配置路由
-	client.Start()
+			//注册链接hook回调函数
+			client.SetOnConnStart(ClientDoConnectionBegin)
+			client.SetOnConnStop(ClientDoConnectionLost)
+
+			//配置路由
+			client.AddRouter(2, &HelloZinxRouter_{})
+			//配置路由
+			client.Start()
+		}()
+		time.Sleep(10)
+	}
+	select {}
+
 }
