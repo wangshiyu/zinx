@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/wangshiyu/zinx/ziface/server"
+	"github.com/wangshiyu/zinx/znet"
 )
 
 type Heartbeat struct {
@@ -13,7 +14,7 @@ func (c *Heartbeat) Run() {
 	connectionMap := c.TcpServer.GetConnMgr().Gets()
 	if len(connectionMap) > 0 {
 		for _, value := range connectionMap {
-			value.SendMsg(-1, []byte("ping"))
+			value.SendMsg(-1, []byte(znet.PING))
 		}
 	}
 }

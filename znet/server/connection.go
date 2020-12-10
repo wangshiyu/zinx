@@ -21,7 +21,7 @@ type Connection struct {
 	//当前连接的socket TCP套接字
 	Conn *net.TCPConn
 	//当前连接的ID 也可以称作为SessionID，ID全局唯一
-	ConnID uint32
+	ConnName string
 	//消息管理MsgId和对应处理方法的消息管理模块
 	MsgHandler ziface.IMsgHandle
 	//告知该链接已经退出/停止的channel
@@ -42,12 +42,12 @@ type Connection struct {
 }
 
 //创建连接的方法
-func NewConntion(server server.IServer, conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) *Connection {
+func NewConntion(server server.IServer, conn *net.TCPConn, connName string, msgHandler ziface.IMsgHandle) *Connection {
 	//初始化Conn属性
 	c := &Connection{
 		TcpServer:   server,
 		Conn:        conn,
-		ConnID:      connID,
+		ConnName:    connName,
 		isClosed:    false,
 		MsgHandler:  msgHandler,
 		msgChan:     make(chan []byte),
@@ -55,7 +55,7 @@ func NewConntion(server server.IServer, conn *net.TCPConn, connID uint32, msgHan
 		property:    make(map[string]interface{}),
 	}
 	//链接时间
-	c.SetProperty(znet.LINK_TIME,time.Now())
+	c.SetProperty(znet.LINK_TIME, time.Now())
 	//将新创建的Conn添加到链接管理中
 	c.TcpServer.GetConnMgr().Add(c)
 	return c
@@ -143,8 +143,12 @@ func (c *Connection) StartReader() {
 					break
 				}
 			}
-			if utils.GlobalObject.Encryption {
-				data = c.TcpServer.GetEncryption().Decrypt(data)
+			//是否ping命令
+			if string(data) != znet.PING {
+				//解密
+				if utils.GlobalObject.Encryption {
+					data = c.TcpServer.GetEncryption().Decrypt(data)
+				}
 			}
 			msg.SetData(data)
 			zlog.Debug("server read data = ", string(data))
@@ -187,7 +191,7 @@ func (c *Connection) Start() {
 //停止连接，结束当前连接状态M
 func (c *Connection) Stop() {
 	//fmt.Println("Conn Stop()...ConnID = ", c.ConnID)
-	zlog.Info("Conn Stop()...ConnID = ", c.ConnID)
+	zlog.Info("Conn Stop()...ConnName = ", c.ConnName)
 	//如果当前链接已经关闭
 	c.Lock()
 	if c.isClosed == true {
@@ -219,8 +223,8 @@ func (c *Connection) GetTCPConnection() *net.TCPConn {
 }
 
 //获取当前连接ID
-func (c *Connection) GetConnID() uint32 {
-	return c.ConnID
+func (c *Connection) GetConnName() string {
+	return c.ConnName
 }
 
 //获取远程客户端地址信息
@@ -239,8 +243,12 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 	zlog.Debug("Server SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
-	if utils.GlobalObject.Encryption {
-		data = c.TcpServer.GetEncryption().Encryption(data)
+	//是否ping命令
+	if string(data) != znet.PING {
+		//加密
+		if utils.GlobalObject.Encryption {
+			data = c.TcpServer.GetEncryption().Encryption(data)
+		}
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
@@ -263,8 +271,12 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 	zlog.Debug("Server SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
-	if utils.GlobalObject.Encryption {
-		data = c.TcpServer.GetEncryption().Encryption(data)
+	//是否ping命令
+	if string(data) != znet.PING {
+		//加密
+		if utils.GlobalObject.Encryption {
+			data = c.TcpServer.GetEncryption().Encryption(data)
+		}
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {

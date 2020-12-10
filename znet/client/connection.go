@@ -137,8 +137,12 @@ func (c *Connection) StartReader() {
 					break
 				}
 			}
-			if utils.GlobalObject.Encryption {
-				data = c.Client.GetEncryption().Decrypt(data)
+			//是否ping命令
+			if string(data) != znet.PING {
+				//解密
+				if utils.GlobalObject.Encryption {
+					data = c.Client.GetEncryption().Decrypt(data)
+				}
 			}
 			zlog.Debug("client read data = ", string(data))
 
@@ -219,8 +223,12 @@ func (c *Connection) SendMsg(msgId int32, data []byte) error {
 	}
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
-	if utils.GlobalObject.Encryption {
-		data = c.Client.GetEncryption().Encryption(data)
+	//是否ping命令
+	if string(data) != znet.PING {
+		//加密
+		if utils.GlobalObject.Encryption {
+			data = c.Client.GetEncryption().Encryption(data)
+		}
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {
@@ -241,8 +249,12 @@ func (c *Connection) SendBuffMsg(msgId int32, data []byte) error {
 	zlog.Debug("Client SendBuffMsg data = ", string(data))
 	//将data封包，并且发送
 	dp := znet.NewDataPack()
-	if utils.GlobalObject.Encryption {
-		data = c.Client.GetEncryption().Encryption(data)
+	//是否ping命令
+	if string(data) != znet.PING {
+		//加密
+		if utils.GlobalObject.Encryption {
+			data = c.Client.GetEncryption().Encryption(data)
+		}
 	}
 	msg, err := dp.Pack(znet.NewMsgPackage(msgId, data))
 	if err != nil {

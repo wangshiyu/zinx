@@ -106,7 +106,7 @@ func (s *Server) Start() {
 				zlog.Error("Accept err ", err)
 				continue
 			}
-			zlog.Info("Get conn remote addr = ", conn.RemoteAddr().String())
+			zlog.Info("lank conn addr = ",conn.RemoteAddr().String())
 
 			//3.2 设置服务器最大连接控制,如果超过最大连接，那么则关闭此新的连接
 			if s.ConnMgr.Len() >= utils.GlobalObject.MaxConn {
@@ -114,9 +114,8 @@ func (s *Server) Start() {
 				conn.Close()
 				continue
 			}
-
 			//3.3 处理该新连接请求的 业务 方法， 此时应该有 handler 和 conn是绑定的
-			dealConn := NewConntion(s, conn, cid, s.msgHandler)
+			dealConn := NewConntion(s, conn, conn.RemoteAddr().String(), s.msgHandler)
 			//cid++
 			//3.4 启动当前链接的处理业务
 			go dealConn.Start()

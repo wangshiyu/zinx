@@ -1,6 +1,9 @@
 package znet
 
 const (
+
+	PING = "ping..."
+
 	//连接时间
 	LINK_TIME = "LINK_TIME"
 

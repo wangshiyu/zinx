@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/wangshiyu/zinx/utils"
 	"github.com/wangshiyu/zinx/ziface/client"
+	"github.com/wangshiyu/zinx/znet"
 )
 
 type Heartbeat struct {
@@ -14,7 +15,7 @@ type Heartbeat struct {
 func (c *Heartbeat) Run() {
 	Connection := c.Client.GetConnection()
 	if utils.IsNotNil(Connection) {
-		err := Connection.SendBuffMsg(-1, []byte("ping"))
+		err := Connection.SendBuffMsg(-1, []byte(znet.PING))
 		if err != nil {
 			fmt.Println(err)
 		}
