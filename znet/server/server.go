@@ -95,9 +95,6 @@ func (s *Server) Start() {
 		//已经监听成功
 		zlog.Info("start Zinx server  ", s.Name, " succ, now listenning...")
 
-		//TODO server.go 应该有一个自动生成ID的方法
-		//var cid uint32
-		//cid = 0
 		//3 启动server网络连接业务
 		for {
 			//3.1 阻塞等待客户端建立连接请求

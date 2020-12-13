@@ -49,12 +49,12 @@ func OpenDebug() {
 
 // ====> Debug <====
 func Debugf(format string, v ...interface{}) {
-	fmt.Println(fmt.Sprintf(format, v...))
+	//fmt.Println(fmt.Sprintf(format, v...))
 	//StdZinxLog.Debugf(format, v...)
 }
 
 func Debug(v ...interface{}) {
-	fmt.Println(v)
+	//fmt.Println(v)
 	//StdZinxLog.Debug(v...)
 }
 

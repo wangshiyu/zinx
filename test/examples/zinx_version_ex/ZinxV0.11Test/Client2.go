@@ -51,7 +51,7 @@ func ClientDoConnectionLost(conn ziface2.IConnection) {
 */
 func main() {
 
-	for n := 0; n <= 2000; n++{
+	for n := 0; n <= 3000; n++{
 		go func (){
 			client := client.NewClient("test")
 

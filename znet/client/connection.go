@@ -116,6 +116,7 @@ func (c *Connection) StartReader() {
 					return
 				default:
 					zlog.Errorf("read msg head error Unknown error:%s", err)
+					return
 				}
 				break
 			}
